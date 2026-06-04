@@ -143,7 +143,10 @@ async function waitForDocumentComplete() {
 
 function isHostedOpenAiCheckoutPage() {
   const host = String(location?.host || '').toLowerCase();
-  return host.includes('pay.openai.com') || host.includes('checkout.stripe.com');
+  const path = String(location?.pathname || '').toLowerCase();
+  return host.includes('pay.openai.com')
+    || host.includes('checkout.stripe.com')
+    || (host.includes('chatgpt.com') && path.startsWith('/checkout/'));
 }
 
 let hostedOpenAiAutocompleteObserver = null;
@@ -483,7 +486,7 @@ function getHostedOpenAiAddressErrorState() {
     'span',
     'p',
   ];
-  const pattern = /customer'?s\s+location\s+isn'?t\s+recognized|set\s+a\s+valid\s+customer\s+address|automatically\s+calculate\s+tax|valid\s+customer\s+address|无法识别.*地址|地址.*无法识别|税.*地址/i;
+  const pattern = /customer'?s\s+location\s+isn'?t\s+recognized|set\s+a\s+valid\s+customer\s+address|automatically\s+calculate\s+tax|valid\s+customer\s+address|无法识别.*地址|地址.*无法识别|自动计算税|税费.*地址|地址.*税费/i;
   const seen = new Set();
   for (const element of Array.from(document.querySelectorAll(selectors.join(', ')))) {
     if (!element || seen.has(element) || !isVisibleElement(element)) {
@@ -492,6 +495,10 @@ function getHostedOpenAiAddressErrorState() {
     seen.add(element);
     const text = normalizeText(element.innerText || element.textContent || '');
     if (!text || !pattern.test(text)) {
+      continue;
+    }
+    // Skip large page-level containers so subscription summary text is not misread as an address error.
+    if ((element.matches?.('div, span, p') || false) && text.length > 160) {
       continue;
     }
     return {
@@ -536,6 +543,69 @@ function getHostedOpenAiCardDeclinedState() {
     seen.add(element);
     const text = normalizeText(element.innerText || element.textContent || '');
     if (!text || !pattern.test(text)) {
+      continue;
+    }
+    return {
+      hasError: true,
+      message: text.slice(0, 240),
+    };
+  }
+
+  return {
+    hasError: false,
+    message: '',
+  };
+}
+
+function hasCheckoutErrorVisualSignal(element) {
+  if (!element) return false;
+  const candidates = [element, element.parentElement, element.closest?.('div, section, form')].filter(Boolean);
+  return candidates.some((node) => {
+    const className = normalizeText(typeof node.className === 'string' ? node.className : node.getAttribute?.('class') || '');
+    const role = normalizeText(node.getAttribute?.('role') || '');
+    const testId = normalizeText(node.getAttribute?.('data-testid') || '');
+    return /(^|\s)(alert|error)(\s|$)/i.test(className)
+      || /(?:^|\s)(?:bg|border|text)-red/i.test(className)
+      || role === 'alert'
+      || /error|alert/i.test(testId);
+  });
+}
+
+function getCheckoutGenericErrorState() {
+  if (!isHostedOpenAiCheckoutPage() || typeof document?.querySelectorAll !== 'function') {
+    return {
+      hasError: false,
+      message: '',
+    };
+  }
+
+  const selectors = [
+    '[role="alert"]',
+    '[aria-live]',
+    '.Alert',
+    '.Error',
+    '.error',
+    '[class*="error"]',
+    '[class*="Error"]',
+    '[class*="alert"]',
+    '[class*="Alert"]',
+    '[class*="red"]',
+    'div',
+    'span',
+    'p',
+  ];
+  const textPattern = /出错了|请重试|重试|something\s+went\s+wrong|try\s+again|payment\s+failed|unable\s+to|failed\s+to|error|支付失败|付款失败|订阅失败/i;
+  const seen = new Set();
+  for (const element of Array.from(document.querySelectorAll(selectors.join(', ')))) {
+    if (!element || seen.has(element) || !isVisibleElement(element)) {
+      continue;
+    }
+    seen.add(element);
+    const text = normalizeText(element.innerText || element.textContent || '');
+    if (!text || text.length > 240 || !textPattern.test(text)) {
+      continue;
+    }
+    if (!hasCheckoutErrorVisualSignal(element)) {
       continue;
     }
     return {
@@ -657,8 +727,16 @@ async function fillHostedOpenAiVerificationCode(verificationCode = '') {
 
 async function runHostedOpenAiCheckoutStep(payload = {}) {
   await waitForDocumentComplete();
-  if (!isHostedOpenAiCheckoutPage()) {
-    throw new Error('当前页面不是 hosted checkout OpenAI/Stripe 页面。');
+  const startWait = Date.now();
+  const maxWaitMs = 10000;
+  while (!isHostedOpenAiCheckoutPage()) {
+    if (typeof throwIfStopped === 'function') {
+      throwIfStopped();
+    }
+    if (Date.now() - startWait > maxWaitMs) {
+      throw new Error('当前页面不是 hosted checkout OpenAI/Stripe 页面。');
+    }
+    await sleep(250);
   }
 
   startHostedOpenAiAutocompleteObserver();
@@ -1058,6 +1136,40 @@ function findInteractiveAncestor(el) {
   return null;
 }
 
+function isLikelyClickablePaymentContainer(el) {
+  if (!el || !isVisibleElement(el) || isDocumentLevelContainer(el)) return false;
+  const style = window.getComputedStyle(el);
+  const tabIndex = Number(el.getAttribute?.('tabindex'));
+  const role = String(el.getAttribute?.('role') || '').trim().toLowerCase();
+  const className = typeof el.className === 'string' ? el.className : el.getAttribute?.('class') || '';
+  const text = getCombinedSearchText(el);
+  return isPaymentCardSized(el)
+    && (
+      style.cursor === 'pointer'
+      || tabIndex >= 0
+      || ['button', 'tab', 'radio', 'option'].includes(role)
+      || typeof el.onclick === 'function'
+      || /\b(tab|radio|select|option|click|pressable|interactive)\b/i.test(className)
+      || /paypal/i.test(text)
+    );
+}
+
+function findFallbackPaymentTarget(candidate, pattern) {
+  let current = candidate;
+  for (let depth = 0; current && depth < 10; depth += 1, current = current.parentElement) {
+    if (!current || !isVisibleElement(current)) continue;
+    if (isDocumentLevelContainer(current)) break;
+    const text = getCombinedSearchText(current);
+    if (pattern.test(text) && isLikelyClickablePaymentContainer(current)) {
+      return current;
+    }
+  }
+  if (candidate && pattern.test(getCombinedSearchText(candidate)) && isVisibleElement(candidate)) {
+    return candidate;
+  }
+  return null;
+}
+
 function findPaymentCardAncestor(el, pattern) {
   let current = el;
   for (let depth = 0; current && depth < 8; depth += 1, current = current.parentElement) {
@@ -1125,6 +1237,10 @@ function getPaymentMethodSearchCandidates(method = PLUS_PAYMENT_METHOD_PAYPAL) {
 
   return getVisibleControls(selector)
     .filter((el) => {
+      const tagName = String(el?.tagName || '').toUpperCase();
+      if (['IFRAME', 'FRAME'].includes(tagName)) {
+        return false;
+      }
       const text = getCombinedSearchText(el);
       return config.patterns.some((pattern) => pattern.test(text));
     })
@@ -1168,8 +1284,17 @@ function findPaymentMethodTarget(method = PLUS_PAYMENT_METHOD_PAYPAL) {
     if (card) {
       return card;
     }
+    const fallback = config.patterns
+      .map((pattern) => findFallbackPaymentTarget(candidate, pattern))
+      .find(Boolean);
+    if (fallback) {
+      return fallback;
+    }
   }
 
+  if (candidates.length === 1) {
+    return candidates[0];
+  }
   return null;
 }
 
@@ -1428,7 +1553,10 @@ async function selectGoPayPaymentMethod() {
 
 async function selectPlusPayPalPaymentMethod() {
   await waitForDocumentComplete();
-  await selectPaymentMethod(PLUS_PAYMENT_METHOD_PAYPAL);
+  const relaxedActivation = /elements-inner-payment|componentName=payment/i.test(String(location.href || ''));
+  await selectPaymentMethod(PLUS_PAYMENT_METHOD_PAYPAL, {
+    relaxedActivation,
+  });
   return {
     paymentSelected: true,
     paymentMethod: PLUS_PAYMENT_METHOD_PAYPAL,
@@ -1455,6 +1583,21 @@ async function fillFullName(fullName) {
     return false;
   }
   fillInput(input, value);
+  await sleep(300);
+  return true;
+}
+
+async function fillPhoneNumber(phone = '') {
+  const digits = String(phone || '').replace(/[^\d+]/g, '').trim();
+  if (!digits) return false;
+  const input = findInputByFieldText([
+    /phone|telephone|mobile|tel|billing\s*phone/i,
+    /电话|手机号|手机号码/i,
+  ]);
+  if (!input) {
+    return false;
+  }
+  fillInput(input, digits);
   await sleep(300);
   return true;
 }
@@ -1691,8 +1834,7 @@ function getRegionCandidates(value) {
     tas: 'Tasmania',
     vic: 'Victoria',
     wa: 'Western Australia',
-    tokyo: '東京都',
-    osaka: '大阪府',
+    ...HOSTED_OPENAI_JP_PREFECTURE_ALIASES,
   };
   const compact = raw.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]/g, '');
   const candidates = [raw];
@@ -2325,6 +2467,7 @@ async function fillPlusBillingAddress(payload = {}) {
   await waitForDocumentComplete();
   const countryText = readCountryText();
   const contactEmail = String(payload.email || payload.registrationEmail || '').trim();
+  const contactPhone = String(payload.phone || payload.contactPhone || '').trim();
   const seed = payload.addressSeed || {
     query: 'Berlin Mitte',
     suggestionIndex: 1,
@@ -2346,6 +2489,7 @@ async function fillPlusBillingAddress(payload = {}) {
     await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-address-query' }, async () => {
       await ensureCountrySelectionBeforeAutocomplete(seed);
       await fillFullName(payload.fullName || '');
+      await fillPhoneNumber(contactPhone);
       await fillAddressQuery(seed);
     });
     selected = await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'select', label: 'select-address-suggestion' }, async () => (
@@ -2355,6 +2499,7 @@ async function fillPlusBillingAddress(payload = {}) {
   const structuredAddress = await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-billing-address' }, async () => {
     if (useDirectStructuredBranch) {
       await fillFullName(payload.fullName || '');
+      await fillPhoneNumber(contactPhone);
     }
     return ensureStructuredAddress(seed, {
       overwrite: useDirectStructuredBranch,
@@ -2379,12 +2524,14 @@ async function fillPlusAddressQuery(payload = {}) {
   await waitForDocumentComplete();
   const seed = payload.addressSeed || {};
   const contactEmail = String(payload.email || payload.registrationEmail || '').trim();
+  const contactPhone = String(payload.phone || payload.contactPhone || '').trim();
   await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-contact-email' }, async () => {
     await fillCheckoutContactEmail(contactEmail);
   });
   await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-address-query' }, async () => {
     await ensureCountrySelectionBeforeAutocomplete(seed);
     await fillFullName(payload.fullName || '');
+    await fillPhoneNumber(contactPhone);
     await fillAddressQuery(seed);
   });
   return {
@@ -2407,8 +2554,12 @@ async function selectPlusAddressSuggestion(payload = {}) {
 async function ensurePlusStructuredBillingAddress(payload = {}) {
   await waitForDocumentComplete();
   const contactEmail = String(payload.email || payload.registrationEmail || '').trim();
+  const contactPhone = String(payload.phone || payload.contactPhone || '').trim();
   await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-contact-email' }, async () => {
     await fillCheckoutContactEmail(contactEmail);
+  });
+  await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-contact-phone' }, async () => {
+    await fillPhoneNumber(contactPhone);
   });
   const structuredAddress = await performOperationWithDelay({ stepKey: 'plus-checkout-billing', kind: 'fill', label: 'fill-billing-address' }, async () => (
     ensureStructuredAddress(payload.addressSeed || {}, {
@@ -2467,6 +2618,7 @@ async function inspectPlusCheckoutState(options = {}) {
   const hostedAddressError = getHostedOpenAiAddressErrorState();
   const hostedCardDeclinedError = getHostedOpenAiCardDeclinedState();
   const hostedCardFallback = getHostedOpenAiCardFallbackState();
+  const customCheckoutError = getCheckoutGenericErrorState();
   const state = {
     url: location.href,
     readyState: document.readyState,
@@ -2487,6 +2639,8 @@ async function inspectPlusCheckoutState(options = {}) {
     hostedAddressErrorMessage: hostedAddressError.message,
     hostedCardDeclinedError: hostedCardDeclinedError.hasError,
     hostedCardDeclinedErrorMessage: hostedCardDeclinedError.message,
+    customCheckoutError: customCheckoutError.hasError,
+    customCheckoutErrorMessage: customCheckoutError.message,
     hostedCardFallback: hostedCardFallback.fallback,
     hostedCardFallbackReason: hostedCardFallback.reason,
     hostedCardFallbackReasons: hostedCardFallback.reasons,

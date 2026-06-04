@@ -219,6 +219,7 @@ const inputHostedCheckoutPhone = document.getElementById('input-hosted-checkout-
 const rowHostedCheckoutSmsPool = document.getElementById('row-hosted-checkout-sms-pool');
 const rowHostedCheckoutResendSettings = document.getElementById('row-hosted-checkout-resend-settings');
 const inputHostedCheckoutFirstDirectResendEnabled = document.getElementById('input-hosted-checkout-first-direct-resend-enabled');
+const inputHostedCheckoutCardDeclinedRetryEnabled = document.getElementById('input-hosted-checkout-card-declined-retry-enabled');
 const inputHostedCheckoutFirstResendWaitSeconds = document.getElementById('input-hosted-checkout-first-resend-wait-seconds');
 const inputHostedCheckoutSubsequentResendWaitSeconds = document.getElementById('input-hosted-checkout-subsequent-resend-wait-seconds');
 const inputHostedCheckoutVerificationPollAttempts = document.getElementById('input-hosted-checkout-verification-poll-attempts');
@@ -479,6 +480,7 @@ const inputRunCount = document.getElementById('input-run-count');
 const inputAutoSkipFailures = document.getElementById('input-auto-skip-failures');
 const inputAutoRunRetryNonFreeTrial = document.getElementById('input-auto-run-retry-non-free-trial');
 const inputAutoRunRetryPaypalCallback = document.getElementById('input-auto-run-retry-paypal-callback');
+const inputAutoRunRetryShortLinkError = document.getElementById('input-auto-run-retry-short-link-error');
 const inputAutoSkipFailuresThreadIntervalMinutes = document.getElementById('input-auto-skip-failures-thread-interval-minutes');
 const inputStep6CookieCleanupEnabled = document.getElementById('input-step6-cookie-cleanup-enabled');
 const inputAutoDelayEnabled = document.getElementById('input-auto-delay-enabled');
@@ -653,6 +655,14 @@ const PLUS_CHECKOUT_PROFILE_SETTING_KEYS = Object.freeze([
   'hostedCheckoutPhoneNumber',
   'hostedCheckoutSmsPoolText',
   'hostedCheckoutSmsPoolUsage',
+  'hostedCheckoutCardDeclinedRetryEnabled',
+  'hostedCheckoutSmsPoolAutoDisableEnabled',
+  'hostedCheckoutFirstDirectResendEnabled',
+  'hostedCheckoutFirstResendWaitSeconds',
+  'hostedCheckoutSubsequentResendWaitSeconds',
+  'hostedCheckoutVerificationResendMaxAttempts',
+  'hostedCheckoutVerificationPollAttempts',
+  'hostedCheckoutVerificationPollIntervalSeconds',
 ]);
 const FIXED_PLUS_MODE_ENABLED = true;
 const GUIDE_REPOSITORY_URL = 'https://github.com/FoundZiGu/GuJumpgate';
@@ -2730,6 +2740,14 @@ function buildDefaultPlusCheckoutProfile() {
     hostedCheckoutPhoneNumber: '',
     hostedCheckoutSmsPoolText: '',
     hostedCheckoutSmsPoolUsage: {},
+    hostedCheckoutCardDeclinedRetryEnabled: true,
+    hostedCheckoutSmsPoolAutoDisableEnabled: false,
+    hostedCheckoutFirstDirectResendEnabled: false,
+    hostedCheckoutFirstResendWaitSeconds: 20,
+    hostedCheckoutSubsequentResendWaitSeconds: 25,
+    hostedCheckoutVerificationResendMaxAttempts: 1,
+    hostedCheckoutVerificationPollAttempts: 6,
+    hostedCheckoutVerificationPollIntervalSeconds: 5,
   };
 }
 
@@ -2770,6 +2788,9 @@ function normalizePlusCheckoutProfileValue(profile = {}, fallback = null) {
       : (baseProfile.hostedCheckoutSmsPoolUsage && typeof baseProfile.hostedCheckoutSmsPoolUsage === 'object'
         ? baseProfile.hostedCheckoutSmsPoolUsage
         : {}),
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(
+      rawProfile.hostedCheckoutCardDeclinedRetryEnabled ?? baseProfile.hostedCheckoutCardDeclinedRetryEnabled
+    ),
     hostedCheckoutSmsPoolAutoDisableEnabled: Boolean(
       rawProfile.hostedCheckoutSmsPoolAutoDisableEnabled ?? baseProfile.hostedCheckoutSmsPoolAutoDisableEnabled
     ),
@@ -2810,6 +2831,7 @@ function buildLegacyPlusCheckoutProfileFromState(state = {}) {
     hostedCheckoutPhoneNumber: state?.hostedCheckoutPhoneNumber,
     hostedCheckoutSmsPoolText: state?.hostedCheckoutSmsPoolText,
     hostedCheckoutSmsPoolUsage: state?.hostedCheckoutSmsPoolUsage,
+    hostedCheckoutCardDeclinedRetryEnabled: state?.hostedCheckoutCardDeclinedRetryEnabled,
     hostedCheckoutSmsPoolAutoDisableEnabled: state?.hostedCheckoutSmsPoolAutoDisableEnabled,
     hostedCheckoutFirstDirectResendEnabled: state?.hostedCheckoutFirstDirectResendEnabled,
     hostedCheckoutFirstResendWaitSeconds: state?.hostedCheckoutFirstResendWaitSeconds,
@@ -2913,6 +2935,7 @@ function buildPlusCheckoutProfileFromInputs() {
     hostedCheckoutPhoneNumber: inputHostedCheckoutPhone?.value || '',
     hostedCheckoutSmsPoolText: inputHostedCheckoutSmsPool?.value || '',
     hostedCheckoutSmsPoolUsage: latestState?.hostedCheckoutSmsPoolUsage || {},
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(inputHostedCheckoutCardDeclinedRetryEnabled?.checked),
   });
 }
 
@@ -3004,6 +3027,9 @@ function applyPlusCheckoutProfileToInputs(state = latestState, options = {}) {
   }
   if (inputHostedCheckoutFirstDirectResendEnabled) {
     inputHostedCheckoutFirstDirectResendEnabled.checked = Boolean(normalizedState?.hostedCheckoutFirstDirectResendEnabled);
+  }
+  if (inputHostedCheckoutCardDeclinedRetryEnabled) {
+    inputHostedCheckoutCardDeclinedRetryEnabled.checked = Boolean(profile.hostedCheckoutCardDeclinedRetryEnabled);
   }
   if (inputHostedCheckoutFirstResendWaitSeconds) {
     inputHostedCheckoutFirstResendWaitSeconds.value = String(
@@ -5185,6 +5211,9 @@ function collectSettingsPayload() {
     autoRunSkipFailures: inputAutoSkipFailures.checked,
     autoRunRetryNonFreeTrial: Boolean(inputAutoRunRetryNonFreeTrial?.checked),
     autoRunRetryPaypalCallback: Boolean(inputAutoRunRetryPaypalCallback?.checked),
+    autoRunRetryShortLinkError: inputAutoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError
+      ? Boolean(inputAutoRunRetryShortLinkError.checked)
+      : true,
     autoRunFallbackThreadIntervalMinutes: normalizeAutoRunThreadIntervalMinutes(inputAutoSkipFailuresThreadIntervalMinutes.value),
     step6CookieCleanupEnabled: typeof inputStep6CookieCleanupEnabled !== 'undefined' && inputStep6CookieCleanupEnabled
       ? Boolean(inputStep6CookieCleanupEnabled.checked)
@@ -5218,6 +5247,9 @@ function collectSettingsPayload() {
     hostedCheckoutSmsPoolAutoDisableEnabled: typeof inputHostedCheckoutSmsPoolAutoDisableEnabled !== 'undefined' && inputHostedCheckoutSmsPoolAutoDisableEnabled
       ? Boolean(inputHostedCheckoutSmsPoolAutoDisableEnabled.checked)
       : false,
+    hostedCheckoutCardDeclinedRetryEnabled: typeof inputHostedCheckoutCardDeclinedRetryEnabled !== 'undefined' && inputHostedCheckoutCardDeclinedRetryEnabled
+      ? Boolean(inputHostedCheckoutCardDeclinedRetryEnabled.checked)
+      : true,
     hostedCheckoutFirstDirectResendEnabled: typeof inputHostedCheckoutFirstDirectResendEnabled !== 'undefined' && inputHostedCheckoutFirstDirectResendEnabled
       ? Boolean(inputHostedCheckoutFirstDirectResendEnabled.checked)
       : false,
@@ -11592,6 +11624,9 @@ function applyAutoRunStatus(payload = currentAutoRun) {
   if (inputAutoRunRetryPaypalCallback) {
     inputAutoRunRetryPaypalCallback.disabled = scheduled;
   }
+  if (inputHostedCheckoutCardDeclinedRetryEnabled) {
+    inputHostedCheckoutCardDeclinedRetryEnabled.disabled = scheduled;
+  }
 
   const lockedRunCount = typeof getLockedRunCountFromEmailPool === 'function'
     ? getLockedRunCountFromEmailPool()
@@ -12213,6 +12248,11 @@ function applySettingsState(state) {
   }
   if (inputAutoRunRetryPaypalCallback) {
     inputAutoRunRetryPaypalCallback.checked = Boolean(state?.autoRunRetryPaypalCallback);
+  }
+  if (inputAutoRunRetryShortLinkError) {
+    inputAutoRunRetryShortLinkError.checked = state?.autoRunRetryShortLinkError !== undefined
+      ? Boolean(state.autoRunRetryShortLinkError)
+      : true;
   }
   inputAutoSkipFailuresThreadIntervalMinutes.value = String(normalizeAutoRunThreadIntervalMinutes(state?.autoRunFallbackThreadIntervalMinutes));
   if (typeof inputStep6CookieCleanupEnabled !== 'undefined' && inputStep6CookieCleanupEnabled) {
@@ -16089,6 +16129,9 @@ async function startAutoRunFromCurrentSettings() {
   const autoRunSkipFailures = inputAutoSkipFailures.checked;
   const autoRunRetryNonFreeTrial = Boolean(inputAutoRunRetryNonFreeTrial?.checked);
   const autoRunRetryPaypalCallback = Boolean(inputAutoRunRetryPaypalCallback?.checked);
+  const autoRunRetryShortLinkError = inputAutoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError
+    ? Boolean(inputAutoRunRetryShortLinkError.checked)
+    : true;
   const contributionNickname = String(inputContributionNickname?.value || '').trim();
   const contributionQq = String(inputContributionQq?.value || '').trim();
   const fallbackThreadIntervalMinutes = normalizeAutoRunThreadIntervalMinutes(
@@ -16140,6 +16183,7 @@ async function startAutoRunFromCurrentSettings() {
       autoRunSkipFailures,
       autoRunRetryNonFreeTrial,
       autoRunRetryPaypalCallback,
+      autoRunRetryShortLinkError,
       contributionMode: Boolean(latestState?.contributionMode),
       contributionNickname,
       contributionQq,
@@ -18378,6 +18422,14 @@ inputHostedCheckoutFirstDirectResendEnabled?.addEventListener('change', () => {
   markSettingsDirty(true);
   saveSettings({ silent: true }).catch(() => { });
 });
+
+inputHostedCheckoutCardDeclinedRetryEnabled?.addEventListener('change', () => {
+  syncActivePlusCheckoutProfilePatch({
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(inputHostedCheckoutCardDeclinedRetryEnabled.checked),
+  });
+  markSettingsDirty(true);
+  saveSettings({ silent: true }).catch(() => { });
+});
 [
   inputHostedCheckoutFirstResendWaitSeconds,
   inputHostedCheckoutSubsequentResendWaitSeconds,
@@ -19511,6 +19563,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (message.payload.autoRunRetryPaypalCallback !== undefined && inputAutoRunRetryPaypalCallback) {
         inputAutoRunRetryPaypalCallback.checked = Boolean(message.payload.autoRunRetryPaypalCallback);
       }
+      if (message.payload.autoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError) {
+        inputAutoRunRetryShortLinkError.checked = Boolean(message.payload.autoRunRetryShortLinkError);
+      }
       if (message.payload.autoRunDelayEnabled !== undefined && inputAutoDelayEnabled) {
         inputAutoDelayEnabled.checked = Boolean(message.payload.autoRunDelayEnabled);
         updateAutoDelayInputState();
@@ -19586,6 +19641,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       }
       if (message.payload.hostedCheckoutFirstDirectResendEnabled !== undefined && inputHostedCheckoutFirstDirectResendEnabled) {
         inputHostedCheckoutFirstDirectResendEnabled.checked = Boolean(message.payload.hostedCheckoutFirstDirectResendEnabled);
+      }
+      if (message.payload.hostedCheckoutCardDeclinedRetryEnabled !== undefined && inputHostedCheckoutCardDeclinedRetryEnabled) {
+        inputHostedCheckoutCardDeclinedRetryEnabled.checked = Boolean(message.payload.hostedCheckoutCardDeclinedRetryEnabled);
       }
       if (message.payload.hostedCheckoutFirstResendWaitSeconds !== undefined && inputHostedCheckoutFirstResendWaitSeconds) {
         inputHostedCheckoutFirstResendWaitSeconds.value = String(
