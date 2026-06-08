@@ -70,8 +70,10 @@ importScripts(
   'cloudflare-temp-email-utils.js',
   'cloudmail-utils.js',
   'freemail-utils.js',
+  'outlook-email-utils.js',
   'outlook-email-plus-utils.js',
   'background/freemail-provider.js',
+  'background/outlook-email-provider.js',
   'background/outlook-email-plus-provider.js',
   'background/cloudmail-provider.js',
   'icloud-utils.js',
@@ -349,6 +351,16 @@ const {
   normalizeFreemailMessages,
 } = self.FreemailUtils;
 const {
+  DEFAULT_OUTLOOK_EMAIL_BASE_URL,
+  buildOutlookEmailHeaders,
+  joinOutlookEmailUrl,
+  normalizeOutlookEmailAccounts,
+  normalizeOutlookEmailAddress,
+  normalizeOutlookEmailBaseUrl,
+  normalizeOutlookEmailGroupId,
+  normalizeOutlookEmailMessages,
+} = self.OutlookEmailUtils;
+const {
   DEFAULT_OUTLOOK_EMAIL_PLUS_BASE_URL,
   buildOutlookEmailPlusAliasAddress,
   buildOutlookEmailPlusHeaders,
@@ -529,6 +541,8 @@ const CLOUD_MAIL_PROVIDER = 'cloudmail';
 const CLOUD_MAIL_GENERATOR = 'cloudmail';
 const FREEMAIL_PROVIDER = 'freemail';
 const FREEMAIL_GENERATOR = 'freemail';
+const OUTLOOK_EMAIL_PROVIDER = 'outlook-email';
+const OUTLOOK_EMAIL_GENERATOR = 'outlook-email';
 const OUTLOOK_EMAIL_PLUS_PROVIDER = 'outlook-email-plus';
 const OUTLOOK_EMAIL_PLUS_GENERATOR = 'outlook-email-plus';
 const CUSTOM_EMAIL_POOL_GENERATOR = 'custom-pool';
@@ -1249,6 +1263,10 @@ const PERSISTED_SETTING_DEFAULTS = {
   freemailAdminPassword: '',
   freemailDomain: '',
   freemailDomains: [],
+  outlookEmailBaseUrl: DEFAULT_OUTLOOK_EMAIL_BASE_URL,
+  outlookEmailApiKey: '',
+  outlookEmailGroupId: '',
+  outlookEmailUsedAccounts: {},
   outlookEmailPlusBaseUrl: DEFAULT_OUTLOOK_EMAIL_PLUS_BASE_URL,
   outlookEmailPlusApiKey: '',
   outlookEmailPlusProvider: 'outlook',
@@ -2770,6 +2788,7 @@ function normalizeEmailGenerator(value = '') {
   if (normalized === CLOUDFLARE_TEMP_EMAIL_GENERATOR) return CLOUDFLARE_TEMP_EMAIL_GENERATOR;
   if (normalized === CLOUD_MAIL_GENERATOR) return CLOUD_MAIL_GENERATOR;
   if (normalized === FREEMAIL_GENERATOR) return FREEMAIL_GENERATOR;
+  if (normalized === OUTLOOK_EMAIL_GENERATOR) return OUTLOOK_EMAIL_GENERATOR;
   if (normalized === OUTLOOK_EMAIL_PLUS_GENERATOR) return OUTLOOK_EMAIL_PLUS_GENERATOR;
   return 'duck';
 }
@@ -3275,6 +3294,7 @@ function normalizeMailProvider(value = '') {
     case CLOUDFLARE_TEMP_EMAIL_PROVIDER:
     case CLOUD_MAIL_PROVIDER:
     case FREEMAIL_PROVIDER:
+    case OUTLOOK_EMAIL_PROVIDER:
     case OUTLOOK_EMAIL_PLUS_PROVIDER:
     case '163':
     case '163-vip':
@@ -3542,6 +3562,32 @@ const {
   pollFreemailVerificationCode,
   resolveFreemailPollTargetEmail,
 } = freemailProvider;
+const outlookEmailProvider = self.MultiPageBackgroundOutlookEmailProvider.createOutlookEmailProvider({
+  addLog,
+  buildOutlookEmailHeaders,
+  getState,
+  joinOutlookEmailUrl,
+  normalizeOutlookEmailAccounts,
+  normalizeOutlookEmailAddress,
+  normalizeOutlookEmailBaseUrl,
+  normalizeOutlookEmailGroupId,
+  normalizeOutlookEmailMessages,
+  OUTLOOK_EMAIL_GENERATOR,
+  pickVerificationMessageWithTimeFallback,
+  persistRegistrationEmailState,
+  setEmailState,
+  setPersistentSettings,
+  setState,
+  sleepWithStop,
+  throwIfStopped,
+});
+const {
+  claimOutlookEmailAddress,
+  getOutlookEmailConfig,
+  listOutlookEmailAccounts,
+  listOutlookEmailMessages,
+  pollOutlookEmailVerificationCode,
+} = outlookEmailProvider;
 const outlookEmailPlusProvider = self.MultiPageBackgroundOutlookEmailPlusProvider.createOutlookEmailPlusProvider({
   addLog,
   broadcastDataUpdate,
@@ -4038,6 +4084,12 @@ function normalizePersistentSettingValue(key, value) {
         if (normalizedMailProvider === FREEMAIL_PROVIDER) {
           return FREEMAIL_PROVIDER;
         }
+        if (normalizedMailProvider === OUTLOOK_EMAIL_PROVIDER) {
+          return OUTLOOK_EMAIL_PROVIDER;
+        }
+        if (normalizedMailProvider === OUTLOOK_EMAIL_PLUS_PROVIDER) {
+          return OUTLOOK_EMAIL_PLUS_PROVIDER;
+        }
         if (normalizedMailProvider === ICLOUD_PROVIDER || normalizedMailProvider === ICLOUD_API_PROVIDER) {
           return normalizedMailProvider;
         }
@@ -4145,6 +4197,14 @@ function normalizePersistentSettingValue(key, value) {
       return normalizeFreemailDomain(value);
     case 'freemailDomains':
       return normalizeFreemailDomains(value);
+    case 'outlookEmailBaseUrl':
+      return normalizeOutlookEmailBaseUrl(value);
+    case 'outlookEmailApiKey':
+      return String(value || '').trim();
+    case 'outlookEmailGroupId':
+      return normalizeOutlookEmailGroupId(value);
+    case 'outlookEmailUsedAccounts':
+      return value && typeof value === 'object' && !Array.isArray(value) ? value : {};
     case 'outlookEmailPlusBaseUrl':
       return normalizeOutlookEmailPlusBaseUrl(value);
     case 'outlookEmailPlusApiKey':
@@ -13526,6 +13586,7 @@ function getEmailGeneratorLabel(generator) {
   if (generator === CLOUDFLARE_TEMP_EMAIL_GENERATOR) return 'Cloudflare Temp Email';
   if (generator === CLOUD_MAIL_GENERATOR) return 'Cloud Mail';
   if (generator === FREEMAIL_GENERATOR) return 'freemail';
+  if (generator === OUTLOOK_EMAIL_GENERATOR) return 'OutlookEmail';
   if (generator === OUTLOOK_EMAIL_PLUS_GENERATOR) return 'Outlook Email Plus';
   return 'Duck 邮箱';
 }
@@ -13709,8 +13770,14 @@ async function fetchGeneratedEmail(state, options = {}) {
     freemailAdminUsername: options.freemailAdminUsername ?? currentState.freemailAdminUsername,
     freemailAdminPassword: options.freemailAdminPassword ?? currentState.freemailAdminPassword,
     freemailDomain: options.freemailDomain ?? currentState.freemailDomain,
+    outlookEmailBaseUrl: options.outlookEmailBaseUrl ?? currentState.outlookEmailBaseUrl,
+    outlookEmailApiKey: options.outlookEmailApiKey ?? currentState.outlookEmailApiKey,
+    outlookEmailGroupId: options.outlookEmailGroupId ?? currentState.outlookEmailGroupId,
   };
   const generator = normalizeEmailGenerator(options.generator ?? currentState.emailGenerator);
+  if (generator === OUTLOOK_EMAIL_GENERATOR) {
+    return claimOutlookEmailAddress(mergedState, options);
+  }
   if (generator === OUTLOOK_EMAIL_PLUS_GENERATOR) {
     return claimOutlookEmailPlusAddress(currentState, options);
   }
@@ -14326,6 +14393,9 @@ function shouldStopEmailAutoFetchRetries(generator, error) {
   }
   const message = String(error?.message || '');
   if (generator === 'cloudflare' && /域名/.test(message)) {
+    return true;
+  }
+  if (generator === OUTLOOK_EMAIL_GENERATOR && /(服务地址|API Key)/.test(message)) {
     return true;
   }
   return generator === CLOUDFLARE_TEMP_EMAIL_GENERATOR && /(服务地址|Admin Auth|域名)/.test(message);
@@ -15259,6 +15329,7 @@ const verificationFlowHelpers = self.MultiPageBackgroundVerificationFlow?.create
   CLOUD_MAIL_PROVIDER,
   FREEMAIL_PROVIDER,
   ICLOUD_API_PROVIDER,
+  OUTLOOK_EMAIL_PROVIDER,
   OUTLOOK_EMAIL_PLUS_PROVIDER,
   completeNodeFromBackground,
   confirmCustomVerificationStepBypassRequest: (step) => chrome.runtime.sendMessage({
@@ -15282,6 +15353,7 @@ const verificationFlowHelpers = self.MultiPageBackgroundVerificationFlow?.create
   pollCloudMailVerificationCode,
   pollFreemailVerificationCode,
   pollIcloudApiVerificationCode,
+  pollOutlookEmailVerificationCode,
   pollOutlookEmailPlusVerificationCode,
   pollHotmailVerificationCode,
   pollLuckmailVerificationCode,
@@ -16123,6 +16195,9 @@ function getMailConfig(state) {
   }
   if (provider === FREEMAIL_PROVIDER) {
     return { provider: FREEMAIL_PROVIDER, label: 'freemail' };
+  }
+  if (provider === OUTLOOK_EMAIL_PROVIDER) {
+    return { provider: OUTLOOK_EMAIL_PROVIDER, label: 'OutlookEmail' };
   }
   if (provider === OUTLOOK_EMAIL_PLUS_PROVIDER) {
     return { provider: OUTLOOK_EMAIL_PLUS_PROVIDER, label: 'Outlook Email Plus' };

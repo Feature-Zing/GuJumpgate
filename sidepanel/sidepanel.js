@@ -353,6 +353,14 @@ const inputFreemailBaseUrl = document.getElementById('input-freemail-base-url');
 const inputFreemailAdminUsername = document.getElementById('input-freemail-admin-username');
 const inputFreemailAdminPassword = document.getElementById('input-freemail-admin-password');
 const inputFreemailDomain = document.getElementById('input-freemail-domain');
+const outlookEmailSection = document.getElementById('outlook-email-section');
+const btnOutlookEmailGithub = document.getElementById('btn-outlook-email-github');
+const rowOutlookEmailBaseUrl = document.getElementById('row-outlook-email-base-url');
+const rowOutlookEmailApiKey = document.getElementById('row-outlook-email-api-key');
+const rowOutlookEmailGroupId = document.getElementById('row-outlook-email-group-id');
+const inputOutlookEmailBaseUrl = document.getElementById('input-outlook-email-base-url');
+const inputOutlookEmailApiKey = document.getElementById('input-outlook-email-api-key');
+const inputOutlookEmailGroupId = document.getElementById('input-outlook-email-group-id');
 const outlookEmailPlusSection = document.getElementById('outlook-email-plus-section');
 const btnOutlookEmailPlusGithub = document.getElementById('btn-outlook-email-plus-github');
 const rowOutlookEmailPlusBaseUrl = document.getElementById('row-outlook-email-plus-base-url');
@@ -1208,6 +1216,8 @@ const LUCKMAIL_PROVIDER = 'luckmail-api';
 const CLOUDFLARE_TEMP_EMAIL_PROVIDER = 'cloudflare-temp-email';
 const CLOUD_MAIL_PROVIDER = 'cloudmail';
 const FREEMAIL_PROVIDER = 'freemail';
+const OUTLOOK_EMAIL_PROVIDER = 'outlook-email';
+const OUTLOOK_EMAIL_GENERATOR = 'outlook-email';
 const OUTLOOK_EMAIL_PLUS_PROVIDER = 'outlook-email-plus';
 const OUTLOOK_EMAIL_PLUS_GENERATOR = 'outlook-email-plus';
 const CUSTOM_EMAIL_POOL_GENERATOR = 'custom-pool';
@@ -1819,6 +1829,11 @@ const MAIL_PROVIDER_LOGIN_CONFIGS = {
   freemail: {
     label: 'freemail 部署',
     url: 'https://github.com/idinging/freemail',
+    buttonLabel: '部署',
+  },
+  [OUTLOOK_EMAIL_PROVIDER]: {
+    label: 'OutlookEmail 部署',
+    url: 'https://github.com/assast/outlookEmail',
     buttonLabel: '部署',
   },
   [OUTLOOK_EMAIL_PLUS_PROVIDER]: {
@@ -3582,10 +3597,48 @@ function normalizeSupportedMailProvider(value = '') {
   if (normalized === FREEMAIL_PROVIDER) {
     return FREEMAIL_PROVIDER;
   }
+  if (normalized === OUTLOOK_EMAIL_PROVIDER) {
+    return OUTLOOK_EMAIL_PROVIDER;
+  }
   if (normalized === OUTLOOK_EMAIL_PLUS_PROVIDER) {
     return OUTLOOK_EMAIL_PLUS_PROVIDER;
   }
   return HOTMAIL_PROVIDER;
+}
+
+function normalizeOutlookEmailBaseUrlValue(value = '') {
+  const utils = window.OutlookEmailUtils;
+  if (utils?.normalizeOutlookEmailBaseUrl) {
+    return utils.normalizeOutlookEmailBaseUrl(value);
+  }
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const localhostLike = /^(?:localhost|127(?:\.\d{1,3}){3}|0\.0\.0\.0|\[::1\]|::1)(?::|\/|$)/i.test(raw);
+  const candidate = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw)
+    ? raw
+    : `${localhostLike ? 'http' : 'https'}://${raw}`;
+  try {
+    const parsed = new URL(candidate);
+    parsed.hash = '';
+    parsed.search = '';
+    let pathname = String(parsed.pathname || '').replace(/\/+/g, '/');
+    pathname = pathname.replace(/\/api\/external(?:\/.*)?$/i, '');
+    pathname = pathname === '/' ? '' : pathname.replace(/\/+$/g, '');
+    return `${parsed.origin}${pathname}`;
+  } catch {
+    return '';
+  }
+}
+
+function normalizeOutlookEmailGroupIdValue(value = '') {
+  const utils = window.OutlookEmailUtils;
+  if (utils?.normalizeOutlookEmailGroupId) {
+    return utils.normalizeOutlookEmailGroupId(value);
+  }
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+  const numeric = Number(raw);
+  return Number.isSafeInteger(numeric) && numeric > 0 ? String(numeric) : '';
 }
 
 function normalizeOutlookEmailPlusBaseUrlValue(value = '') {
@@ -4121,6 +4174,18 @@ function applyFreemailSettingsState(state = {}) {
   }
 }
 
+function applyOutlookEmailSettingsState(state = {}) {
+  if (inputOutlookEmailBaseUrl) {
+    inputOutlookEmailBaseUrl.value = state?.outlookEmailBaseUrl || '';
+  }
+  if (inputOutlookEmailApiKey) {
+    inputOutlookEmailApiKey.value = state?.outlookEmailApiKey || '';
+  }
+  if (inputOutlookEmailGroupId) {
+    inputOutlookEmailGroupId.value = normalizeOutlookEmailGroupIdValue(state?.outlookEmailGroupId);
+  }
+}
+
 function validateFreemailConfigForGeneration(options = {}) {
   const { focusOnError = false } = options;
   if (getSelectedEmailGenerator() !== FREEMAIL_PROVIDER) {
@@ -4154,6 +4219,35 @@ function validateFreemailConfigForGeneration(options = {}) {
       inputFreemailAdminPassword?.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
     return { valid: false, message: '请先填写 freemail 管理员密码。' };
+  }
+
+  return { valid: true };
+}
+
+function validateOutlookEmailConfigForGeneration(options = {}) {
+  const { focusOnError = false } = options;
+  if (getSelectedEmailGenerator() !== OUTLOOK_EMAIL_GENERATOR) {
+    return { valid: true };
+  }
+
+  const baseUrl = normalizeOutlookEmailBaseUrlValue(inputOutlookEmailBaseUrl?.value || '');
+  if (!baseUrl) {
+    if (focusOnError) {
+      inputOutlookEmailBaseUrl?.focus();
+      inputOutlookEmailBaseUrl?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return {
+      valid: false,
+      message: '请先填写 OutlookEmail API 地址，例如 http://127.0.0.1:5000。',
+    };
+  }
+
+  if (!String(inputOutlookEmailApiKey?.value || '').trim()) {
+    if (focusOnError) {
+      inputOutlookEmailApiKey?.focus();
+      inputOutlookEmailApiKey?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return { valid: false, message: '请先填写 OutlookEmail API Key。' };
   }
 
   return { valid: true };
@@ -4209,6 +4303,12 @@ function collectSettingsPayload() {
   const normalizeFreemailDomainInput = typeof normalizeFreemailDomainValue === 'function'
     ? normalizeFreemailDomainValue
     : normalizeCloudflareTempEmailDomainValue;
+  const normalizeOutlookEmailBaseUrlInput = typeof normalizeOutlookEmailBaseUrlValue === 'function'
+    ? normalizeOutlookEmailBaseUrlValue
+    : ((value) => String(value || '').trim());
+  const normalizeOutlookEmailGroupIdInput = typeof normalizeOutlookEmailGroupIdValue === 'function'
+    ? normalizeOutlookEmailGroupIdValue
+    : ((value) => String(value || '').trim());
   const normalizeOutlookEmailPlusBaseUrlInput = typeof normalizeOutlookEmailPlusBaseUrlValue === 'function'
     ? normalizeOutlookEmailPlusBaseUrlValue
     : ((value = '') => String(value || '').trim().replace(/\/+$/g, ''));
@@ -5176,6 +5276,9 @@ function collectSettingsPayload() {
     freemailAdminUsername: ((typeof inputFreemailAdminUsername !== 'undefined' && inputFreemailAdminUsername) ? inputFreemailAdminUsername.value : '').trim(),
     freemailAdminPassword: (typeof inputFreemailAdminPassword !== 'undefined' && inputFreemailAdminPassword) ? inputFreemailAdminPassword.value : '',
     freemailDomain: normalizeFreemailDomainInput((typeof inputFreemailDomain !== 'undefined' && inputFreemailDomain) ? inputFreemailDomain.value : ''),
+    outlookEmailBaseUrl: normalizeOutlookEmailBaseUrlInput((typeof inputOutlookEmailBaseUrl !== 'undefined' && inputOutlookEmailBaseUrl) ? inputOutlookEmailBaseUrl.value : ''),
+    outlookEmailApiKey: (typeof inputOutlookEmailApiKey !== 'undefined' && inputOutlookEmailApiKey) ? inputOutlookEmailApiKey.value : '',
+    outlookEmailGroupId: normalizeOutlookEmailGroupIdInput((typeof inputOutlookEmailGroupId !== 'undefined' && inputOutlookEmailGroupId) ? inputOutlookEmailGroupId.value : ''),
     outlookEmailPlusBaseUrl: normalizeOutlookEmailPlusBaseUrlInput((typeof inputOutlookEmailPlusBaseUrl !== 'undefined' && inputOutlookEmailPlusBaseUrl) ? inputOutlookEmailPlusBaseUrl.value : ''),
     outlookEmailPlusApiKey: (typeof inputOutlookEmailPlusApiKey !== 'undefined' && inputOutlookEmailPlusApiKey) ? inputOutlookEmailPlusApiKey.value : '',
     outlookEmailPlusProvider: normalizeOutlookEmailPlusProviderInput((typeof inputOutlookEmailPlusProvider !== 'undefined' && inputOutlookEmailPlusProvider) ? inputOutlookEmailPlusProvider.value : ''),
@@ -12085,6 +12188,12 @@ function applySettingsState(state) {
     const freemailProvider = typeof FREEMAIL_PROVIDER === 'string'
       ? FREEMAIL_PROVIDER
       : 'freemail';
+    const outlookEmailProvider = typeof OUTLOOK_EMAIL_PROVIDER === 'string'
+      ? OUTLOOK_EMAIL_PROVIDER
+      : 'outlook-email';
+    const outlookEmailGenerator = typeof OUTLOOK_EMAIL_GENERATOR === 'string'
+      ? OUTLOOK_EMAIL_GENERATOR
+      : 'outlook-email';
     const outlookEmailPlusProvider = typeof OUTLOOK_EMAIL_PLUS_PROVIDER === 'string'
       ? OUTLOOK_EMAIL_PLUS_PROVIDER
       : 'outlook-email-plus';
@@ -12105,6 +12214,8 @@ function applySettingsState(state) {
       selectEmailGenerator.value = 'cloudflare-temp-email';
     } else if (restoredMailProvider === freemailProvider) {
       selectEmailGenerator.value = freemailProvider;
+    } else if (restoredMailProvider === outlookEmailProvider) {
+      selectEmailGenerator.value = outlookEmailGenerator;
     } else if (restoredMailProvider === outlookEmailPlusProvider) {
       selectEmailGenerator.value = outlookEmailPlusGenerator;
     } else if (restoredMailProvider === 'hotmail-api') {
@@ -12125,6 +12236,8 @@ function applySettingsState(state) {
       selectEmailGenerator.value = 'cloudmail';
     } else if (restoredEmailGenerator === freemailProvider) {
       selectEmailGenerator.value = freemailProvider;
+    } else if (restoredEmailGenerator === outlookEmailGenerator) {
+      selectEmailGenerator.value = outlookEmailGenerator;
     } else if (restoredEmailGenerator === outlookEmailPlusGenerator) {
       selectEmailGenerator.value = outlookEmailPlusGenerator;
     } else {
@@ -12201,6 +12314,9 @@ function applySettingsState(state) {
   }
   if (typeof applyFreemailSettingsState === 'function') {
     applyFreemailSettingsState(state);
+  }
+  if (typeof applyOutlookEmailSettingsState === 'function') {
+    applyOutlookEmailSettingsState(state);
   }
   if (typeof applyOutlookEmailPlusSettingsState === 'function') {
     applyOutlookEmailPlusSettingsState(state);
@@ -13052,6 +13168,7 @@ function getSelectedEmailGenerator() {
   if (generator === 'cloudflare-temp-email') return 'cloudflare-temp-email';
   if (generator === 'cloudmail') return 'cloudmail';
   if (generator === FREEMAIL_PROVIDER) return FREEMAIL_PROVIDER;
+  if (generator === OUTLOOK_EMAIL_GENERATOR) return OUTLOOK_EMAIL_GENERATOR;
   if (generator === OUTLOOK_EMAIL_PLUS_GENERATOR) return OUTLOOK_EMAIL_PLUS_GENERATOR;
   return 'duck';
 }
@@ -13114,6 +13231,14 @@ function getEmailGeneratorUiCopy() {
       placeholder: '点击生成 freemail 邮箱，或手动粘贴邮箱',
       successVerb: '生成',
       label: 'freemail',
+    };
+  }
+  if (getSelectedEmailGenerator() === OUTLOOK_EMAIL_GENERATOR) {
+    return {
+      buttonLabel: '取用',
+      placeholder: '点击从 OutlookEmail 账号池取用邮箱，或手动粘贴邮箱',
+      successVerb: '取用',
+      label: 'OutlookEmail',
     };
   }
   if (getSelectedEmailGenerator() === OUTLOOK_EMAIL_PLUS_GENERATOR) {
@@ -13547,6 +13672,7 @@ function updateMailProviderUI() {
   const useCloudflareTempEmailProvider = selectMailProvider.value === 'cloudflare-temp-email';
   const useCloudMailProvider = selectMailProvider.value === 'cloudmail';
   const useFreemailProvider = selectMailProvider.value === FREEMAIL_PROVIDER;
+  const useOutlookEmailProvider = selectMailProvider.value === OUTLOOK_EMAIL_PROVIDER;
   const useOutlookEmailPlusProvider = selectMailProvider.value === OUTLOOK_EMAIL_PLUS_PROVIDER;
   const gmailAliasGenerator = typeof GMAIL_ALIAS_GENERATOR === 'string'
     ? GMAIL_ALIAS_GENERATOR
@@ -13563,6 +13689,8 @@ function updateMailProviderUI() {
     allowedEmailGenerators = new Set(['cloudmail']);
   } else if (useFreemailProvider) {
     allowedEmailGenerators = new Set([FREEMAIL_PROVIDER]);
+  } else if (useOutlookEmailProvider) {
+    allowedEmailGenerators = new Set([OUTLOOK_EMAIL_GENERATOR]);
   } else if (useOutlookEmailPlusProvider) {
     allowedEmailGenerators = new Set([OUTLOOK_EMAIL_PLUS_GENERATOR]);
   } else if (useGmail) {
@@ -13599,6 +13727,9 @@ function updateMailProviderUI() {
   if (useFreemailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== FREEMAIL_PROVIDER) {
     selectEmailGenerator.value = FREEMAIL_PROVIDER;
   }
+  if (useOutlookEmailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== OUTLOOK_EMAIL_GENERATOR) {
+    selectEmailGenerator.value = OUTLOOK_EMAIL_GENERATOR;
+  }
   if (useOutlookEmailPlusProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== OUTLOOK_EMAIL_PLUS_GENERATOR) {
     selectEmailGenerator.value = OUTLOOK_EMAIL_PLUS_GENERATOR;
   }
@@ -13627,6 +13758,7 @@ function updateMailProviderUI() {
   const useCloudflareTempEmailGenerator = selectedGenerator === 'cloudflare-temp-email';
   const useCloudMailGenerator = selectedGenerator === 'cloudmail';
   const useFreemailGenerator = selectedGenerator === FREEMAIL_PROVIDER;
+  const useOutlookEmailGenerator = selectedGenerator === OUTLOOK_EMAIL_GENERATOR;
   const useOutlookEmailPlusGenerator = selectedGenerator === OUTLOOK_EMAIL_PLUS_GENERATOR;
   const showCloudflareDomain = useEmailGenerator && useCloudflare;
   const showCloudflareTempEmailSettings = useCloudflareTempEmailProvider || (useEmailGenerator && useCloudflareTempEmailGenerator);
@@ -13646,6 +13778,7 @@ function updateMailProviderUI() {
   const showCloudMailDomain = useEmailGenerator && useCloudMailGenerator;
   const showFreemailSettings = useFreemailProvider || (useEmailGenerator && useFreemailGenerator);
   const showFreemailDomain = useEmailGenerator && useFreemailGenerator;
+  const showOutlookEmailSettings = useOutlookEmailProvider || (useEmailGenerator && useOutlookEmailGenerator);
   const showOutlookEmailPlusSettings = useOutlookEmailPlusProvider || (useEmailGenerator && useOutlookEmailPlusGenerator);
   const useIcloudApiProvider = isIcloudApiMailProvider();
   const selectedIcloudHost = typeof getSelectedIcloudHostPreference === 'function'
@@ -13688,6 +13821,12 @@ function updateMailProviderUI() {
   if (typeof rowFreemailAdminUsername !== 'undefined' && rowFreemailAdminUsername) rowFreemailAdminUsername.style.display = showFreemailSettings ? '' : 'none';
   if (typeof rowFreemailAdminPassword !== 'undefined' && rowFreemailAdminPassword) rowFreemailAdminPassword.style.display = showFreemailSettings ? '' : 'none';
   if (typeof rowFreemailDomain !== 'undefined' && rowFreemailDomain) rowFreemailDomain.style.display = showFreemailDomain ? '' : 'none';
+  if (typeof outlookEmailSection !== 'undefined' && outlookEmailSection) {
+    outlookEmailSection.style.display = showOutlookEmailSettings ? '' : 'none';
+  }
+  if (typeof rowOutlookEmailBaseUrl !== 'undefined' && rowOutlookEmailBaseUrl) rowOutlookEmailBaseUrl.style.display = showOutlookEmailSettings ? '' : 'none';
+  if (typeof rowOutlookEmailApiKey !== 'undefined' && rowOutlookEmailApiKey) rowOutlookEmailApiKey.style.display = showOutlookEmailSettings ? '' : 'none';
+  if (typeof rowOutlookEmailGroupId !== 'undefined' && rowOutlookEmailGroupId) rowOutlookEmailGroupId.style.display = showOutlookEmailSettings ? '' : 'none';
   if (typeof outlookEmailPlusSection !== 'undefined' && outlookEmailPlusSection) {
     outlookEmailPlusSection.style.display = showOutlookEmailPlusSettings ? '' : 'none';
   }
@@ -14677,6 +14816,10 @@ async function fetchGeneratedEmail(options = {}) {
   if (!freemailValidation.valid) {
     throw new Error(freemailValidation.message);
   }
+  const outlookEmailValidation = validateOutlookEmailConfigForGeneration({ focusOnError: true });
+  if (!outlookEmailValidation.valid) {
+    throw new Error(outlookEmailValidation.message);
+  }
   const defaultLabel = uiCopy.buttonLabel;
   btnFetchEmail.disabled = true;
   btnFetchEmail.textContent = '...';
@@ -14695,6 +14838,9 @@ async function fetchGeneratedEmail(options = {}) {
         freemailAdminUsername: String(inputFreemailAdminUsername?.value || '').trim(),
         freemailAdminPassword: inputFreemailAdminPassword?.value || '',
         freemailDomain: normalizeFreemailDomainValue(inputFreemailDomain?.value || ''),
+        outlookEmailBaseUrl: normalizeOutlookEmailBaseUrlValue(inputOutlookEmailBaseUrl?.value || ''),
+        outlookEmailApiKey: inputOutlookEmailApiKey?.value || '',
+        outlookEmailGroupId: normalizeOutlookEmailGroupIdValue(inputOutlookEmailGroupId?.value || ''),
         ...(getSelectedEmailGenerator() === CUSTOM_EMAIL_POOL_GENERATOR
           ? {
               customEmailPool: getActiveCustomEmailPoolEmails(),
@@ -15949,6 +16095,10 @@ btnFreemailGithub?.addEventListener('click', () => {
   openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[FREEMAIL_PROVIDER]?.url || 'https://github.com/idinging/freemail');
 });
 
+btnOutlookEmailGithub?.addEventListener('click', () => {
+  openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[OUTLOOK_EMAIL_PROVIDER]?.url || 'https://github.com/assast/outlookEmail');
+});
+
 btnOutlookEmailPlusGithub?.addEventListener('click', () => {
   openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[OUTLOOK_EMAIL_PLUS_PROVIDER]?.url || 'https://github.com/ZeroPointSix/outlookEmailPlus');
 });
@@ -16370,6 +16520,25 @@ inputVpsPassword.addEventListener('blur', () => {
     scheduleSettingsAutoSave();
   });
   input?.addEventListener('blur', () => {
+    saveSettings({ silent: true }).catch(() => { });
+  });
+});
+
+[
+  inputOutlookEmailBaseUrl,
+  inputOutlookEmailApiKey,
+  inputOutlookEmailGroupId,
+].forEach((input) => {
+  input?.addEventListener('input', () => {
+    markSettingsDirty(true);
+    scheduleSettingsAutoSave();
+  });
+  input?.addEventListener('blur', () => {
+    if (input === inputOutlookEmailBaseUrl) {
+      input.value = normalizeOutlookEmailBaseUrlValue(input.value);
+    } else if (input === inputOutlookEmailGroupId) {
+      input.value = normalizeOutlookEmailGroupIdValue(input.value);
+    }
     saveSettings({ silent: true }).catch(() => { });
   });
 });
@@ -19323,6 +19492,22 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         || message.payload.freemailAdminUsername !== undefined
         || message.payload.freemailAdminPassword !== undefined
         || message.payload.freemailDomain !== undefined
+      ) {
+        updateMailProviderUI();
+      }
+      if (message.payload.outlookEmailBaseUrl !== undefined && inputOutlookEmailBaseUrl) {
+        inputOutlookEmailBaseUrl.value = message.payload.outlookEmailBaseUrl || '';
+      }
+      if (message.payload.outlookEmailApiKey !== undefined && inputOutlookEmailApiKey) {
+        inputOutlookEmailApiKey.value = message.payload.outlookEmailApiKey || '';
+      }
+      if (message.payload.outlookEmailGroupId !== undefined && inputOutlookEmailGroupId) {
+        inputOutlookEmailGroupId.value = normalizeOutlookEmailGroupIdValue(message.payload.outlookEmailGroupId);
+      }
+      if (
+        message.payload.outlookEmailBaseUrl !== undefined
+        || message.payload.outlookEmailApiKey !== undefined
+        || message.payload.outlookEmailGroupId !== undefined
       ) {
         updateMailProviderUI();
       }

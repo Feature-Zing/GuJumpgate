@@ -613,6 +613,7 @@
             <option value="cloudflare-temp-email">Cloudflare Temp Email</option>
             <option value="cloudmail">Cloud Mail</option>
             <option value="freemail">freemail</option>
+            <option value="outlook-email">OutlookEmail</option>
             <option value="outlook-email-plus">Outlook Email Plus</option>
           </select>
           <button id="btn-mail-login" class="btn btn-outline btn-sm data-inline-btn" type="button" disabled>登录</button>
@@ -641,6 +642,7 @@
           <option value="cloudflare-temp-email">Cloudflare Temp Email</option>
           <option value="cloudmail">Cloud Mail</option>
           <option value="freemail">freemail</option>
+          <option value="outlook-email">OutlookEmail</option>
           <option value="outlook-email-plus">Outlook Email Plus</option>
         </select>
       </div>
@@ -992,6 +994,36 @@
         <span class="data-label">主域名</span>
         <input type="text" id="input-freemail-domain" class="data-input"
           placeholder="可留空，生成时自动取 freemail 返回的第一个域名" />
+      </div>
+    </div>
+    <div id="outlook-email-section" class="data-card hotmail-card" style="display:none;">
+      <div class="section-mini-header">
+        <div class="section-mini-copy">
+          <span class="section-label">OutlookEmail</span>
+          <span class="data-value">通过 assast/outlookEmail 对外 API 获取账号并读取最新验证码邮件</span>
+        </div>
+        <div class="section-mini-actions">
+          <button id="btn-outlook-email-github" class="btn btn-ghost btn-xs" type="button">部署</button>
+        </div>
+      </div>
+      <div class="data-row" id="row-outlook-email-base-url" style="display:none;">
+        <span class="data-label">API 地址</span>
+        <input type="text" id="input-outlook-email-base-url" class="data-input" placeholder="http://127.0.0.1:5000" />
+      </div>
+      <div class="data-row" id="row-outlook-email-api-key" style="display:none;">
+        <span class="data-label">API Key</span>
+        <div class="input-with-icon">
+          <input type="password" id="input-outlook-email-api-key" class="data-input data-input-with-icon"
+            placeholder="OutlookEmail 对外 API Key" />
+          <button id="btn-toggle-outlook-email-api-key" class="input-icon-btn" type="button"
+            data-password-toggle="input-outlook-email-api-key" data-show-label="显示 API Key"
+            data-hide-label="隐藏 API Key" aria-label="显示 API Key" title="显示 API Key"></button>
+        </div>
+      </div>
+      <div class="data-row" id="row-outlook-email-group-id" style="display:none;">
+        <span class="data-label">分组 ID</span>
+        <input type="number" id="input-outlook-email-group-id" class="data-input auto-delay-input"
+          min="1" step="1" placeholder="可选；留空使用全部普通邮箱账号" />
       </div>
     </div>
     <div id="outlook-email-plus-section" class="data-card hotmail-card" style="display:none;">
@@ -2166,6 +2198,7 @@
   <script src="../mail-provider-utils.js"></script>
   <script src="../hotmail-utils.js"></script>
   <script src="../luckmail-utils.js"></script>
+  <script src="../outlook-email-utils.js"></script>
   <script src="../shared/flow-capabilities.js"></script>
   <script src="../data/step-definitions.js"></script>
   <script src="update-service.js"></script>
