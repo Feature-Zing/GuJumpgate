@@ -219,6 +219,7 @@ const inputHostedCheckoutPhone = document.getElementById('input-hosted-checkout-
 const rowHostedCheckoutSmsPool = document.getElementById('row-hosted-checkout-sms-pool');
 const rowHostedCheckoutResendSettings = document.getElementById('row-hosted-checkout-resend-settings');
 const inputHostedCheckoutFirstDirectResendEnabled = document.getElementById('input-hosted-checkout-first-direct-resend-enabled');
+const inputHostedCheckoutCardDeclinedRetryEnabled = document.getElementById('input-hosted-checkout-card-declined-retry-enabled');
 const inputHostedCheckoutFirstResendWaitSeconds = document.getElementById('input-hosted-checkout-first-resend-wait-seconds');
 const inputHostedCheckoutSubsequentResendWaitSeconds = document.getElementById('input-hosted-checkout-subsequent-resend-wait-seconds');
 const inputHostedCheckoutVerificationPollAttempts = document.getElementById('input-hosted-checkout-verification-poll-attempts');
@@ -353,6 +354,22 @@ const inputFreemailBaseUrl = document.getElementById('input-freemail-base-url');
 const inputFreemailAdminUsername = document.getElementById('input-freemail-admin-username');
 const inputFreemailAdminPassword = document.getElementById('input-freemail-admin-password');
 const inputFreemailDomain = document.getElementById('input-freemail-domain');
+const moemailSection = document.getElementById('moemail-section');
+const btnMoemailDocs = document.getElementById('btn-moemail-docs');
+const rowMoemailBaseUrl = document.getElementById('row-moemail-base-url');
+const rowMoemailApiKey = document.getElementById('row-moemail-api-key');
+const rowMoemailDomain = document.getElementById('row-moemail-domain');
+const inputMoemailBaseUrl = document.getElementById('input-moemail-base-url');
+const inputMoemailApiKey = document.getElementById('input-moemail-api-key');
+const inputMoemailDomain = document.getElementById('input-moemail-domain');
+const yydsmailSection = document.getElementById('yydsmail-section');
+const btnYydsMailDocs = document.getElementById('btn-yydsmail-docs');
+const rowYydsMailBaseUrl = document.getElementById('row-yydsmail-base-url');
+const rowYydsMailApiKey = document.getElementById('row-yydsmail-api-key');
+const rowYydsMailDomain = document.getElementById('row-yydsmail-domain');
+const inputYydsMailBaseUrl = document.getElementById('input-yydsmail-base-url');
+const inputYydsMailApiKey = document.getElementById('input-yydsmail-api-key');
+const inputYydsMailDomain = document.getElementById('input-yydsmail-domain');
 const outlookEmailSection = document.getElementById('outlook-email-section');
 const btnOutlookEmailGithub = document.getElementById('btn-outlook-email-github');
 const rowOutlookEmailBaseUrl = document.getElementById('row-outlook-email-base-url');
@@ -434,6 +451,37 @@ const btnToggleHotmailList = document.getElementById('btn-toggle-hotmail-list');
 const hotmailFormShell = document.getElementById('hotmail-form-shell');
 const hotmailListShell = document.getElementById('hotmail-list-shell');
 const hotmailAccountsList = document.getElementById('hotmail-accounts-list');
+const ppboomSection = document.getElementById('ppboom-section');
+const displayPpboomStatus = document.getElementById('display-ppboom-status');
+const inputPpboomEnabled = document.getElementById('input-ppboom-enabled');
+const ppboomSettingsShell = document.getElementById('ppboom-settings-shell');
+const selectPpboomBrowserBackend = document.getElementById('select-ppboom-browser-backend');
+const rowPpboomAdsPowerApiBase = document.getElementById('row-ppboom-adspower-api-base');
+const inputPpboomAdsPowerApiBase = document.getElementById('input-ppboom-adspower-api-base');
+const rowPpboomAdsPowerApiKey = document.getElementById('row-ppboom-adspower-api-key');
+const inputPpboomAdsPowerApiKey = document.getElementById('input-ppboom-adspower-api-key');
+const rowPpboomRoxyBrowserApiBase = document.getElementById('row-ppboom-roxybrowser-api-base');
+const inputPpboomRoxyBrowserApiBase = document.getElementById('input-ppboom-roxybrowser-api-base');
+const rowPpboomRoxyBrowserApiKey = document.getElementById('row-ppboom-roxybrowser-api-key');
+const inputPpboomRoxyBrowserApiKey = document.getElementById('input-ppboom-roxybrowser-api-key');
+const rowPpboomAdsPowerProfileId = document.getElementById('row-ppboom-adspower-profile-id');
+const inputPpboomAdsPowerProfileId = document.getElementById('input-ppboom-adspower-profile-id');
+const rowPpboomRoxyBrowserProfileId = document.getElementById('row-ppboom-roxybrowser-profile-id');
+const inputPpboomRoxyBrowserProfileId = document.getElementById('input-ppboom-roxybrowser-profile-id');
+const inputPpboomStripePublishableKey = document.getElementById('input-ppboom-stripe-publishable-key');
+const inputPpboomDeviceId = document.getElementById('input-ppboom-device-id');
+const inputPpboomUserAgent = document.getElementById('input-ppboom-user-agent');
+const inputPpboomMaxAttempts = document.getElementById('input-ppboom-max-attempts');
+const selectPpboomPaymentLocale = document.getElementById('select-ppboom-payment-locale');
+const inputPpboomCheckoutRebuildMaxAttempts = document.getElementById('input-ppboom-checkout-rebuild-max-attempts');
+const inputPpboomDefaultProxy = document.getElementById('input-ppboom-default-proxy');
+const rowPpboomProviderProxy = document.getElementById('row-ppboom-provider-proxy');
+const inputPpboomProviderProxy = document.getElementById('input-ppboom-provider-proxy');
+const btnSavePpboomSettings = document.getElementById('btn-save-ppboom-settings');
+const btnClearPpboomSettings = document.getElementById('btn-clear-ppboom-settings');
+const btnPpboomPause = document.getElementById('btn-ppboom-pause');
+const btnPpboomResume = document.getElementById('btn-ppboom-resume');
+const displayPpboomRuntime = document.getElementById('display-ppboom-runtime');
 const inputMail2925Email = document.getElementById('input-mail2925-email');
 const inputMail2925Password = document.getElementById('input-mail2925-password');
 const inputMail2925Import = document.getElementById('input-mail2925-import');
@@ -487,6 +535,7 @@ const inputRunCount = document.getElementById('input-run-count');
 const inputAutoSkipFailures = document.getElementById('input-auto-skip-failures');
 const inputAutoRunRetryNonFreeTrial = document.getElementById('input-auto-run-retry-non-free-trial');
 const inputAutoRunRetryPaypalCallback = document.getElementById('input-auto-run-retry-paypal-callback');
+const inputAutoRunRetryShortLinkError = document.getElementById('input-auto-run-retry-short-link-error');
 const inputAutoSkipFailuresThreadIntervalMinutes = document.getElementById('input-auto-skip-failures-thread-interval-minutes');
 const inputStep6CookieCleanupEnabled = document.getElementById('input-step6-cookie-cleanup-enabled');
 const inputAutoDelayEnabled = document.getElementById('input-auto-delay-enabled');
@@ -656,11 +705,22 @@ const PLUS_CHECKOUT_MODE_LABELS = Object.freeze({
   [PLUS_CHECKOUT_MODE_US_PP]: '美区PP Plus Checkout',
   [PLUS_CHECKOUT_MODE_JP_PP]: '日区PP Plus Checkout',
 });
+const PPBOOM_DEFAULT_MAX_ATTEMPTS = 10;
+const PPBOOM_MAX_ATTEMPTS_LIMIT = 20;
+const PPBOOM_ALLOWED_PAYMENT_LOCALES = new Set(['en', 'zh-CN', 'zh-TW', 'ja', 'ko', 'de', 'fr', 'es', 'id', 'pt-BR']);
 const PLUS_CHECKOUT_PROFILE_SETTING_KEYS = Object.freeze([
   'hostedCheckoutVerificationUrl',
   'hostedCheckoutPhoneNumber',
   'hostedCheckoutSmsPoolText',
   'hostedCheckoutSmsPoolUsage',
+  'hostedCheckoutCardDeclinedRetryEnabled',
+  'hostedCheckoutSmsPoolAutoDisableEnabled',
+  'hostedCheckoutFirstDirectResendEnabled',
+  'hostedCheckoutFirstResendWaitSeconds',
+  'hostedCheckoutSubsequentResendWaitSeconds',
+  'hostedCheckoutVerificationResendMaxAttempts',
+  'hostedCheckoutVerificationPollAttempts',
+  'hostedCheckoutVerificationPollIntervalSeconds',
 ]);
 const FIXED_PLUS_MODE_ENABLED = true;
 const GUIDE_REPOSITORY_URL = 'https://github.com/FoundZiGu/GuJumpgate';
@@ -740,7 +800,7 @@ const PHONE_REPLACEMENT_LIMIT_MAX = 100;
 const DEFAULT_PHONE_VERIFICATION_REPLACEMENT_LIMIT = 3;
 const WHATSAPP_PHONE_VERIFICATION_RESTART_LIMIT_MIN = 1;
 const WHATSAPP_PHONE_VERIFICATION_RESTART_LIMIT_MAX = 20;
-const DEFAULT_WHATSAPP_PHONE_VERIFICATION_RESTART_MAX_ATTEMPTS = 3;
+const DEFAULT_WHATSAPP_PHONE_VERIFICATION_RESTART_MAX_ATTEMPTS = 5;
 const PHONE_CODE_WAIT_SECONDS_MIN = 15;
 const PHONE_CODE_WAIT_SECONDS_MAX = 300;
 const DEFAULT_PHONE_CODE_WAIT_SECONDS = 120;
@@ -1136,6 +1196,10 @@ function getStepIdByNodeIdForCurrentMode(nodeId = '') {
 
 function rebuildStepDefinitionState(plusModeEnabled = false, options = {}) {
   currentPlusModeEnabled = Boolean(plusModeEnabled);
+  const currentPpBoomEnabled = Boolean(
+    options?.ppBoomEnabled
+    ?? (typeof inputPpboomEnabled !== 'undefined' && inputPpboomEnabled ? inputPpboomEnabled.checked : latestState?.ppBoomEnabled)
+  );
   const defaultMethod = typeof DEFAULT_PLUS_PAYMENT_METHOD !== 'undefined' ? DEFAULT_PLUS_PAYMENT_METHOD : 'paypal';
   const rawPaymentMethod = typeof options === 'string'
     ? options
@@ -1171,6 +1235,7 @@ function rebuildStepDefinitionState(plusModeEnabled = false, options = {}) {
     plusAccountAccessStrategy: currentPlusAccountAccessStrategy,
     signupMethod: currentSignupMethod,
     phoneSignupReloginAfterBindEmailEnabled: currentPhoneSignupReloginAfterBindEmailEnabled,
+    ppBoomEnabled: currentPpBoomEnabled,
   });
   const nextWorkflowNodes = typeof getWorkflowNodesForMode === 'function'
     ? getWorkflowNodesForMode(currentPlusModeEnabled, {
@@ -1180,6 +1245,7 @@ function rebuildStepDefinitionState(plusModeEnabled = false, options = {}) {
       plusAccountAccessStrategy: currentPlusAccountAccessStrategy,
       signupMethod: currentSignupMethod,
       phoneSignupReloginAfterBindEmailEnabled: currentPhoneSignupReloginAfterBindEmailEnabled,
+      ppBoomEnabled: currentPpBoomEnabled,
     })
     : stepDefinitions.map((step) => ({
       legacyStepId: Number(step.id),
@@ -1216,6 +1282,10 @@ const LUCKMAIL_PROVIDER = 'luckmail-api';
 const CLOUDFLARE_TEMP_EMAIL_PROVIDER = 'cloudflare-temp-email';
 const CLOUD_MAIL_PROVIDER = 'cloudmail';
 const FREEMAIL_PROVIDER = 'freemail';
+const MOEMAIL_PROVIDER = 'moemail';
+const MOEMAIL_GENERATOR = 'moemail';
+const YYDSMAIL_PROVIDER = 'yydsmail';
+const YYDSMAIL_GENERATOR = 'yydsmail';
 const OUTLOOK_EMAIL_PROVIDER = 'outlook-email';
 const OUTLOOK_EMAIL_GENERATOR = 'outlook-email';
 const OUTLOOK_EMAIL_PLUS_PROVIDER = 'outlook-email-plus';
@@ -1831,6 +1901,16 @@ const MAIL_PROVIDER_LOGIN_CONFIGS = {
     url: 'https://github.com/idinging/freemail',
     buttonLabel: '部署',
   },
+  [MOEMAIL_PROVIDER]: {
+    label: 'MoeMail 文档',
+    url: 'https://docs.moemail.app/api',
+    buttonLabel: '文档',
+  },
+  [YYDSMAIL_PROVIDER]: {
+    label: 'YYDS Mail 文档',
+    url: 'https://vip.215.im/docs',
+    buttonLabel: '文档',
+  },
   [OUTLOOK_EMAIL_PROVIDER]: {
     label: 'OutlookEmail 部署',
     url: 'https://github.com/assast/outlookEmail',
@@ -1928,7 +2008,7 @@ function showToast(message, type = 'error', duration = 4000) {
 }
 
 function isLocalHelperStartupErrorMessage(message = '') {
-  return /请检查本地\s*hotmail-helper\s*是否启动|start-hotmail-helper\.bat/i.test(String(message || ''));
+  return /请检查本地\s*(?:hotmail-helper|ppboom)\s*是否启动|start-(?:hotmail-helper|ppboom)\.(?:bat|command)/i.test(String(message || ''));
 }
 
 function showLocalHelperStartupAlert(message = '') {
@@ -1941,7 +2021,7 @@ function showLocalHelperStartupAlert(message = '') {
     title: '本地 helper 未连接',
     message: String(message || '本地 CPA JSON 导出无法连接本地 helper。'),
     alert: {
-      text: '请检查本地 hotmail-helper 是否启动。',
+      text: '请检查本地 hotmail-helper / PPBoom 是否启动。',
       tone: 'danger',
     },
     confirmLabel: '我知道了',
@@ -2745,6 +2825,134 @@ function buildDefaultPlusCheckoutProfile() {
     hostedCheckoutPhoneNumber: '',
     hostedCheckoutSmsPoolText: '',
     hostedCheckoutSmsPoolUsage: {},
+    hostedCheckoutCardDeclinedRetryEnabled: true,
+    hostedCheckoutSmsPoolAutoDisableEnabled: false,
+    hostedCheckoutFirstDirectResendEnabled: false,
+    hostedCheckoutFirstResendWaitSeconds: 20,
+    hostedCheckoutSubsequentResendWaitSeconds: 25,
+    hostedCheckoutVerificationResendMaxAttempts: 1,
+    hostedCheckoutVerificationPollAttempts: 6,
+    hostedCheckoutVerificationPollIntervalSeconds: 5,
+  };
+}
+
+function buildDefaultPpboomSettings() {
+  return {
+    ppBoomEnabled: true,
+    ppBoomBrowserBackend: 'local',
+    ppBoomAdsPowerApiBase: 'http://127.0.0.1:50325',
+    ppBoomAdsPowerApiKey: '',
+    ppBoomAdsPowerProfileId: '',
+    ppBoomRoxyBrowserApiBase: 'http://127.0.0.1:50000',
+    ppBoomRoxyBrowserApiKey: '',
+    ppBoomRoxyBrowserProfileId: '',
+    ppBoomStripePublishableKey: '',
+    ppBoomDeviceId: '',
+    ppBoomUserAgent: '',
+    ppBoomMaxAttempts: PPBOOM_DEFAULT_MAX_ATTEMPTS,
+    ppBoomPaymentLocale: 'en',
+    ppBoomCheckoutRebuildMaxAttempts: 3,
+    ppBoomDefaultProxy: '',
+    ppBoomProviderProxy: '',
+  };
+}
+
+function normalizePpboomMaxAttemptsValue(value, fallback = PPBOOM_DEFAULT_MAX_ATTEMPTS) {
+  const numeric = Number.parseInt(String(value ?? '').trim(), 10);
+  if (!Number.isFinite(numeric)) {
+    return Math.max(1, Math.min(PPBOOM_MAX_ATTEMPTS_LIMIT, Number(fallback) || PPBOOM_DEFAULT_MAX_ATTEMPTS));
+  }
+  return Math.max(1, Math.min(PPBOOM_MAX_ATTEMPTS_LIMIT, numeric));
+}
+
+function normalizePpboomPaymentLocaleValue(value = '') {
+  const normalized = String(value || '').trim();
+  return PPBOOM_ALLOWED_PAYMENT_LOCALES.has(normalized) ? normalized : 'en';
+}
+
+function normalizePpboomBrowserBackendValue(value = '') {
+  const normalized = String(value || '').trim().toLowerCase();
+  if (normalized === 'adspower') return 'adspower';
+  if (normalized === 'roxybrowser') return 'roxybrowser';
+  return 'local';
+}
+
+function setPpboomInputValue(input, value = '') {
+  if (!input) {
+    return;
+  }
+  if (typeof document !== 'undefined' && document.activeElement === input) {
+    return;
+  }
+  const nextValue = String(value ?? '');
+  if (input.value !== nextValue) {
+    input.value = nextValue;
+  }
+}
+
+function normalizePpboomAdsPowerApiBaseValue(value = '') {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return '';
+  }
+  return /:\/\//.test(raw) ? raw.replace(/\/+$/, '') : `http://${raw.replace(/\/+$/, '')}`;
+}
+
+function normalizePpboomRoxyBrowserApiBaseValue(value = '') {
+  const raw = String(value || '').trim();
+  if (!raw) {
+    return '';
+  }
+  return /:\/\//.test(raw) ? raw.replace(/\/+$/, '') : `http://${raw.replace(/\/+$/, '')}`;
+}
+
+function normalizePpboomCheckoutRebuildMaxAttemptsValue(value, fallback = 3) {
+  const numeric = Number.parseInt(String(value ?? '').trim(), 10);
+  if (!Number.isFinite(numeric)) {
+    return Math.max(1, Math.min(10, Number(fallback) || 3));
+  }
+  return Math.max(1, Math.min(10, numeric));
+}
+
+function normalizePpboomSettingsValue(state = {}) {
+  const defaults = buildDefaultPpboomSettings();
+  const legacyProxy = String(state?.ppBoomProxy || '').trim();
+  const hasRoxyBrowserProfileId = Object.prototype.hasOwnProperty.call(
+    state && typeof state === 'object' ? state : {},
+    'ppBoomRoxyBrowserProfileId',
+  );
+  const legacyProfileId = String(state?.ppBoomAdsPowerProfileId || '').trim();
+  const roxyBrowserProfileId = hasRoxyBrowserProfileId
+    ? String(state?.ppBoomRoxyBrowserProfileId || '').trim()
+    : (normalizePpboomBrowserBackendValue(state?.ppBoomBrowserBackend) === 'roxybrowser' ? legacyProfileId : '');
+  const hasAdsPowerApiBase = Object.prototype.hasOwnProperty.call(
+    state && typeof state === 'object' ? state : {},
+    'ppBoomAdsPowerApiBase',
+  );
+  const hasRoxyBrowserApiBase = Object.prototype.hasOwnProperty.call(
+    state && typeof state === 'object' ? state : {},
+    'ppBoomRoxyBrowserApiBase',
+  );
+  return {
+    ppBoomEnabled: Boolean(state?.ppBoomEnabled),
+    ppBoomBrowserBackend: normalizePpboomBrowserBackendValue(state?.ppBoomBrowserBackend || defaults.ppBoomBrowserBackend),
+    ppBoomAdsPowerApiBase: normalizePpboomAdsPowerApiBaseValue(hasAdsPowerApiBase ? state?.ppBoomAdsPowerApiBase : defaults.ppBoomAdsPowerApiBase),
+    ppBoomAdsPowerApiKey: String(state?.ppBoomAdsPowerApiKey || defaults.ppBoomAdsPowerApiKey || '').trim(),
+    ppBoomAdsPowerProfileId: legacyProfileId,
+    ppBoomRoxyBrowserApiBase: normalizePpboomRoxyBrowserApiBaseValue(hasRoxyBrowserApiBase ? state?.ppBoomRoxyBrowserApiBase : defaults.ppBoomRoxyBrowserApiBase),
+    ppBoomRoxyBrowserApiKey: String(state?.ppBoomRoxyBrowserApiKey || defaults.ppBoomRoxyBrowserApiKey || '').trim(),
+    ppBoomRoxyBrowserProfileId: roxyBrowserProfileId,
+    ppBoomStripePublishableKey: String(state?.ppBoomStripePublishableKey || '').trim(),
+    ppBoomDeviceId: String(state?.ppBoomDeviceId || '').trim(),
+    ppBoomUserAgent: String(state?.ppBoomUserAgent || '').trim(),
+    ppBoomMaxAttempts: normalizePpboomMaxAttemptsValue(state?.ppBoomMaxAttempts, defaults.ppBoomMaxAttempts),
+    ppBoomPaymentLocale: normalizePpboomPaymentLocaleValue(state?.ppBoomPaymentLocale || defaults.ppBoomPaymentLocale),
+    ppBoomCheckoutRebuildMaxAttempts: normalizePpboomCheckoutRebuildMaxAttemptsValue(
+      state?.ppBoomCheckoutRebuildMaxAttempts,
+      defaults.ppBoomCheckoutRebuildMaxAttempts,
+    ),
+    ppBoomDefaultProxy: String(state?.ppBoomDefaultProxy || legacyProxy).trim(),
+    ppBoomProviderProxy: String(state?.ppBoomProviderProxy || '').trim(),
   };
 }
 
@@ -2785,6 +2993,9 @@ function normalizePlusCheckoutProfileValue(profile = {}, fallback = null) {
       : (baseProfile.hostedCheckoutSmsPoolUsage && typeof baseProfile.hostedCheckoutSmsPoolUsage === 'object'
         ? baseProfile.hostedCheckoutSmsPoolUsage
         : {}),
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(
+      rawProfile.hostedCheckoutCardDeclinedRetryEnabled ?? baseProfile.hostedCheckoutCardDeclinedRetryEnabled
+    ),
     hostedCheckoutSmsPoolAutoDisableEnabled: Boolean(
       rawProfile.hostedCheckoutSmsPoolAutoDisableEnabled ?? baseProfile.hostedCheckoutSmsPoolAutoDisableEnabled
     ),
@@ -2825,6 +3036,7 @@ function buildLegacyPlusCheckoutProfileFromState(state = {}) {
     hostedCheckoutPhoneNumber: state?.hostedCheckoutPhoneNumber,
     hostedCheckoutSmsPoolText: state?.hostedCheckoutSmsPoolText,
     hostedCheckoutSmsPoolUsage: state?.hostedCheckoutSmsPoolUsage,
+    hostedCheckoutCardDeclinedRetryEnabled: state?.hostedCheckoutCardDeclinedRetryEnabled,
     hostedCheckoutSmsPoolAutoDisableEnabled: state?.hostedCheckoutSmsPoolAutoDisableEnabled,
     hostedCheckoutFirstDirectResendEnabled: state?.hostedCheckoutFirstDirectResendEnabled,
     hostedCheckoutFirstResendWaitSeconds: state?.hostedCheckoutFirstResendWaitSeconds,
@@ -2928,6 +3140,7 @@ function buildPlusCheckoutProfileFromInputs() {
     hostedCheckoutPhoneNumber: inputHostedCheckoutPhone?.value || '',
     hostedCheckoutSmsPoolText: inputHostedCheckoutSmsPool?.value || '',
     hostedCheckoutSmsPoolUsage: latestState?.hostedCheckoutSmsPoolUsage || {},
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(inputHostedCheckoutCardDeclinedRetryEnabled?.checked),
   });
 }
 
@@ -3020,6 +3233,9 @@ function applyPlusCheckoutProfileToInputs(state = latestState, options = {}) {
   if (inputHostedCheckoutFirstDirectResendEnabled) {
     inputHostedCheckoutFirstDirectResendEnabled.checked = Boolean(normalizedState?.hostedCheckoutFirstDirectResendEnabled);
   }
+  if (inputHostedCheckoutCardDeclinedRetryEnabled) {
+    inputHostedCheckoutCardDeclinedRetryEnabled.checked = Boolean(profile.hostedCheckoutCardDeclinedRetryEnabled);
+  }
   if (inputHostedCheckoutFirstResendWaitSeconds) {
     inputHostedCheckoutFirstResendWaitSeconds.value = String(
       normalizeHostedCheckoutResendWaitSeconds(normalizedState?.hostedCheckoutFirstResendWaitSeconds, 20)
@@ -3051,6 +3267,182 @@ function applyPlusCheckoutProfileToInputs(state = latestState, options = {}) {
   }
   updatePlusCheckoutConversionModeUi();
   validateHostedCheckoutContactConfig();
+}
+
+function updatePpboomUi(state = latestState) {
+  const normalized = normalizePpboomSettingsValue(state || {});
+  const runtimeStatus = String(state?.ppBoomJobStatus || '').trim().toLowerCase();
+  const currentAttempt = Math.max(0, Number(state?.ppBoomCurrentAttempt) || 0);
+  const enabled = Boolean(normalized.ppBoomEnabled);
+  if (ppboomSection) {
+    ppboomSection.style.display = '';
+  }
+  if (inputPpboomEnabled) {
+    inputPpboomEnabled.checked = enabled;
+  }
+  if (ppboomSettingsShell) {
+    ppboomSettingsShell.hidden = !enabled;
+  }
+  const browserBackend = normalized.ppBoomBrowserBackend;
+  if (selectPpboomBrowserBackend) {
+    selectPpboomBrowserBackend.value = browserBackend;
+  }
+  if (rowPpboomAdsPowerApiBase) {
+    rowPpboomAdsPowerApiBase.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomAdsPowerApiBase, normalized.ppBoomAdsPowerApiBase);
+  if (rowPpboomAdsPowerApiKey) {
+    rowPpboomAdsPowerApiKey.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomAdsPowerApiKey, normalized.ppBoomAdsPowerApiKey);
+  if (rowPpboomRoxyBrowserApiBase) {
+    rowPpboomRoxyBrowserApiBase.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomRoxyBrowserApiBase, normalized.ppBoomRoxyBrowserApiBase);
+  if (rowPpboomRoxyBrowserApiKey) {
+    rowPpboomRoxyBrowserApiKey.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomRoxyBrowserApiKey, normalized.ppBoomRoxyBrowserApiKey);
+  if (rowPpboomAdsPowerProfileId) {
+    rowPpboomAdsPowerProfileId.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomAdsPowerProfileId, normalized.ppBoomAdsPowerProfileId);
+  if (rowPpboomRoxyBrowserProfileId) {
+    rowPpboomRoxyBrowserProfileId.style.display = '';
+  }
+  setPpboomInputValue(inputPpboomRoxyBrowserProfileId, normalized.ppBoomRoxyBrowserProfileId);
+  if (inputPpboomStripePublishableKey) {
+    inputPpboomStripePublishableKey.value = normalized.ppBoomStripePublishableKey;
+  }
+  if (inputPpboomDeviceId) {
+    inputPpboomDeviceId.value = normalized.ppBoomDeviceId;
+  }
+  if (inputPpboomUserAgent) {
+    inputPpboomUserAgent.value = normalized.ppBoomUserAgent;
+  }
+  if (inputPpboomMaxAttempts) {
+    inputPpboomMaxAttempts.value = String(normalized.ppBoomMaxAttempts);
+  }
+  if (selectPpboomPaymentLocale) {
+    selectPpboomPaymentLocale.value = normalized.ppBoomPaymentLocale;
+  }
+  if (inputPpboomCheckoutRebuildMaxAttempts) {
+    inputPpboomCheckoutRebuildMaxAttempts.value = String(normalized.ppBoomCheckoutRebuildMaxAttempts);
+  }
+  if (inputPpboomDefaultProxy) {
+    inputPpboomDefaultProxy.value = normalized.ppBoomDefaultProxy;
+  }
+  if (inputPpboomProviderProxy) {
+    inputPpboomProviderProxy.value = normalized.ppBoomProviderProxy;
+  }
+  if (rowPpboomProviderProxy) {
+    rowPpboomProviderProxy.hidden = false;
+  }
+  if (displayPpboomStatus) {
+    displayPpboomStatus.textContent = enabled ? '已启用' : '默认关闭';
+  }
+  if (displayPpboomRuntime) {
+    if (runtimeStatus === 'pending') {
+      displayPpboomRuntime.textContent = `准备中：第 ${currentAttempt} / ${normalized.ppBoomMaxAttempts} 次`;
+    } else if (runtimeStatus === 'running') {
+      displayPpboomRuntime.textContent = `运行中：第 ${currentAttempt} / ${normalized.ppBoomMaxAttempts} 次`;
+    } else if (runtimeStatus === 'paused') {
+      displayPpboomRuntime.textContent = `已暂停：第 ${currentAttempt} / ${normalized.ppBoomMaxAttempts} 次`;
+    } else if (runtimeStatus === 'succeeded') {
+      displayPpboomRuntime.textContent = `已成功：第 ${currentAttempt} 次`;
+    } else if (runtimeStatus === 'failed') {
+      displayPpboomRuntime.textContent = `已失败：共 ${currentAttempt} 次`;
+    } else {
+      displayPpboomRuntime.textContent = '未运行';
+    }
+  }
+  if (btnPpboomPause) {
+    btnPpboomPause.disabled = !(enabled && (runtimeStatus === 'running' || runtimeStatus === 'pending'));
+  }
+  if (btnPpboomResume) {
+    btnPpboomResume.disabled = !(enabled && runtimeStatus === 'paused');
+  }
+}
+
+function buildPpboomSettingsPayloadFromInputs() {
+  const browserBackend = normalizePpboomBrowserBackendValue(selectPpboomBrowserBackend?.value || 'local');
+  return {
+    ppBoomEnabled: Boolean(inputPpboomEnabled?.checked),
+    ppBoomBrowserBackend: browserBackend,
+    ppBoomAdsPowerApiBase: normalizePpboomAdsPowerApiBaseValue(inputPpboomAdsPowerApiBase?.value || ''),
+    ppBoomAdsPowerApiKey: String(inputPpboomAdsPowerApiKey?.value || '').trim(),
+    ppBoomAdsPowerProfileId: String(inputPpboomAdsPowerProfileId?.value || '').trim(),
+    ppBoomRoxyBrowserApiBase: normalizePpboomRoxyBrowserApiBaseValue(inputPpboomRoxyBrowserApiBase?.value || ''),
+    ppBoomRoxyBrowserApiKey: String(inputPpboomRoxyBrowserApiKey?.value || '').trim(),
+    ppBoomRoxyBrowserProfileId: String(inputPpboomRoxyBrowserProfileId?.value || '').trim(),
+    ppBoomStripePublishableKey: String(inputPpboomStripePublishableKey?.value || '').trim(),
+    ppBoomDeviceId: String(inputPpboomDeviceId?.value || '').trim(),
+    ppBoomUserAgent: String(inputPpboomUserAgent?.value || '').trim(),
+    ppBoomMaxAttempts: normalizePpboomMaxAttemptsValue(inputPpboomMaxAttempts?.value, PPBOOM_DEFAULT_MAX_ATTEMPTS),
+    ppBoomPaymentLocale: normalizePpboomPaymentLocaleValue(selectPpboomPaymentLocale?.value || 'en'),
+    ppBoomCheckoutRebuildMaxAttempts: normalizePpboomCheckoutRebuildMaxAttemptsValue(
+      inputPpboomCheckoutRebuildMaxAttempts?.value,
+      3,
+    ),
+    ppBoomDefaultProxy: String(inputPpboomDefaultProxy?.value || '').trim(),
+    ppBoomProviderProxy: String(inputPpboomProviderProxy?.value || '').trim(),
+  };
+}
+
+function resetPpboomInputsToDefaults() {
+  const defaults = buildDefaultPpboomSettings();
+  if (inputPpboomEnabled) {
+    inputPpboomEnabled.checked = defaults.ppBoomEnabled;
+  }
+  if (selectPpboomBrowserBackend) {
+    selectPpboomBrowserBackend.value = defaults.ppBoomBrowserBackend;
+  }
+  if (inputPpboomAdsPowerApiBase) {
+    inputPpboomAdsPowerApiBase.value = defaults.ppBoomAdsPowerApiBase;
+  }
+  if (inputPpboomAdsPowerApiKey) {
+    inputPpboomAdsPowerApiKey.value = defaults.ppBoomAdsPowerApiKey;
+  }
+  if (inputPpboomAdsPowerProfileId) {
+    inputPpboomAdsPowerProfileId.value = defaults.ppBoomAdsPowerProfileId;
+  }
+  if (inputPpboomRoxyBrowserProfileId) {
+    inputPpboomRoxyBrowserProfileId.value = defaults.ppBoomRoxyBrowserProfileId;
+  }
+  if (inputPpboomRoxyBrowserApiBase) {
+    inputPpboomRoxyBrowserApiBase.value = defaults.ppBoomRoxyBrowserApiBase;
+  }
+  if (inputPpboomRoxyBrowserApiKey) {
+    inputPpboomRoxyBrowserApiKey.value = defaults.ppBoomRoxyBrowserApiKey;
+  }
+  if (inputPpboomStripePublishableKey) {
+    inputPpboomStripePublishableKey.value = defaults.ppBoomStripePublishableKey;
+  }
+  if (inputPpboomDeviceId) {
+    inputPpboomDeviceId.value = defaults.ppBoomDeviceId;
+  }
+  if (inputPpboomUserAgent) {
+    inputPpboomUserAgent.value = defaults.ppBoomUserAgent;
+  }
+  if (inputPpboomMaxAttempts) {
+    inputPpboomMaxAttempts.value = String(defaults.ppBoomMaxAttempts);
+  }
+  if (selectPpboomPaymentLocale) {
+    selectPpboomPaymentLocale.value = defaults.ppBoomPaymentLocale;
+  }
+  if (inputPpboomCheckoutRebuildMaxAttempts) {
+    inputPpboomCheckoutRebuildMaxAttempts.value = String(defaults.ppBoomCheckoutRebuildMaxAttempts);
+  }
+  if (inputPpboomDefaultProxy) {
+    inputPpboomDefaultProxy.value = defaults.ppBoomDefaultProxy;
+  }
+  if (inputPpboomProviderProxy) {
+    inputPpboomProviderProxy.value = defaults.ppBoomProviderProxy;
+  }
+  updatePpboomUi({
+    ...latestState,
+    ...defaults,
+  });
 }
 
 function normalizeGpcHelperPhoneModeValue(value = '') {
@@ -3597,6 +3989,12 @@ function normalizeSupportedMailProvider(value = '') {
   if (normalized === FREEMAIL_PROVIDER) {
     return FREEMAIL_PROVIDER;
   }
+  if (normalized === MOEMAIL_PROVIDER) {
+    return MOEMAIL_PROVIDER;
+  }
+  if (normalized === YYDSMAIL_PROVIDER) {
+    return YYDSMAIL_PROVIDER;
+  }
   if (normalized === OUTLOOK_EMAIL_PROVIDER) {
     return OUTLOOK_EMAIL_PROVIDER;
   }
@@ -4061,6 +4459,54 @@ function normalizeCloudMailDomainValue(value = '') {
   return normalizeCloudflareDomainValue(value);
 }
 
+function normalizeMoemailBaseUrlValue(value = '') {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const candidate = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw) ? raw : `https://${raw}`;
+  try {
+    const parsed = new URL(candidate);
+    parsed.hash = '';
+    parsed.search = '';
+    const pathname = parsed.pathname === '/' ? '' : parsed.pathname.replace(/\/+$/, '');
+    return `${parsed.origin}${pathname}`;
+  } catch {
+    return '';
+  }
+}
+
+function normalizeMoemailDomainValue(value = '') {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/^@+/, '')
+    .replace(/^https?:\/\//, '')
+    .replace(/\/.*$/, '');
+}
+
+function normalizeYydsMailBaseUrlValue(value = '') {
+  const raw = String(value || '').trim();
+  if (!raw) return '';
+  const candidate = /^[a-zA-Z][a-zA-Z\d+\-.]*:\/\//.test(raw) ? raw : `https://${raw}`;
+  try {
+    const parsed = new URL(candidate);
+    parsed.hash = '';
+    parsed.search = '';
+    const pathname = parsed.pathname === '/' ? '' : parsed.pathname.replace(/\/+$/, '');
+    return `${parsed.origin}${pathname}`;
+  } catch {
+    return '';
+  }
+}
+
+function normalizeYydsMailDomainValue(value = '') {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .replace(/^@+/, '')
+    .replace(/^https?:\/\//, '')
+    .replace(/\/.*$/, '');
+}
+
 function normalizeFreemailBaseUrlValue(value = '') {
   return normalizeCloudflareTempEmailBaseUrlValue(value);
 }
@@ -4174,6 +4620,30 @@ function applyFreemailSettingsState(state = {}) {
   }
 }
 
+function applyMoemailSettingsState(state = {}) {
+  if (inputMoemailBaseUrl) {
+    inputMoemailBaseUrl.value = state?.moemailBaseUrl || '';
+  }
+  if (inputMoemailApiKey) {
+    inputMoemailApiKey.value = state?.moemailApiKey || '';
+  }
+  if (inputMoemailDomain) {
+    inputMoemailDomain.value = state?.moemailDomain || '';
+  }
+}
+
+function applyYydsMailSettingsState(state = {}) {
+  if (inputYydsMailBaseUrl) {
+    inputYydsMailBaseUrl.value = state?.yydsMailBaseUrl || '';
+  }
+  if (inputYydsMailApiKey) {
+    inputYydsMailApiKey.value = state?.yydsMailApiKey || '';
+  }
+  if (inputYydsMailDomain) {
+    inputYydsMailDomain.value = state?.yydsMailDomain || '';
+  }
+}
+
 function applyOutlookEmailSettingsState(state = {}) {
   if (inputOutlookEmailBaseUrl) {
     inputOutlookEmailBaseUrl.value = state?.outlookEmailBaseUrl || '';
@@ -4219,6 +4689,64 @@ function validateFreemailConfigForGeneration(options = {}) {
       inputFreemailAdminPassword?.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }
     return { valid: false, message: '请先填写 freemail 管理员密码。' };
+  }
+
+  return { valid: true };
+}
+
+function validateMoemailConfigForGeneration(options = {}) {
+  const { focusOnError = false } = options;
+  if (getSelectedEmailGenerator() !== MOEMAIL_GENERATOR) {
+    return { valid: true };
+  }
+
+  const baseUrl = normalizeMoemailBaseUrlValue(inputMoemailBaseUrl?.value || '');
+  if (!baseUrl) {
+    if (focusOnError) {
+      inputMoemailBaseUrl?.focus();
+      inputMoemailBaseUrl?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return {
+      valid: false,
+      message: '请先填写 MoeMail API 地址，例如 https://your-moemail-domain。',
+    };
+  }
+
+  if (!String(inputMoemailApiKey?.value || '').trim()) {
+    if (focusOnError) {
+      inputMoemailApiKey?.focus();
+      inputMoemailApiKey?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return { valid: false, message: '请先填写 MoeMail API Key。' };
+  }
+
+  return { valid: true };
+}
+
+function validateYydsMailConfigForGeneration(options = {}) {
+  const { focusOnError = false } = options;
+  if (getSelectedEmailGenerator() !== YYDSMAIL_GENERATOR) {
+    return { valid: true };
+  }
+
+  const baseUrl = normalizeYydsMailBaseUrlValue(inputYydsMailBaseUrl?.value || '');
+  if (!baseUrl) {
+    if (focusOnError) {
+      inputYydsMailBaseUrl?.focus();
+      inputYydsMailBaseUrl?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return {
+      valid: false,
+      message: '请先填写 YYDS Mail API 地址，例如 https://vip.215.im。',
+    };
+  }
+
+  if (!String(inputYydsMailApiKey?.value || '').trim()) {
+    if (focusOnError) {
+      inputYydsMailApiKey?.focus();
+      inputYydsMailApiKey?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+    return { valid: false, message: '请先填写 YYDS Mail API Key。' };
   }
 
   return { valid: true };
@@ -4302,6 +4830,18 @@ function collectSettingsPayload() {
     : normalizeCloudflareTempEmailBaseUrlValue;
   const normalizeFreemailDomainInput = typeof normalizeFreemailDomainValue === 'function'
     ? normalizeFreemailDomainValue
+    : normalizeCloudflareTempEmailDomainValue;
+  const normalizeMoemailBaseUrlInput = typeof normalizeMoemailBaseUrlValue === 'function'
+    ? normalizeMoemailBaseUrlValue
+    : normalizeCloudflareTempEmailBaseUrlValue;
+  const normalizeMoemailDomainInput = typeof normalizeMoemailDomainValue === 'function'
+    ? normalizeMoemailDomainValue
+    : normalizeCloudflareTempEmailDomainValue;
+  const normalizeYydsMailBaseUrlInput = typeof normalizeYydsMailBaseUrlValue === 'function'
+    ? normalizeYydsMailBaseUrlValue
+    : normalizeCloudflareTempEmailBaseUrlValue;
+  const normalizeYydsMailDomainInput = typeof normalizeYydsMailDomainValue === 'function'
+    ? normalizeYydsMailDomainValue
     : normalizeCloudflareTempEmailDomainValue;
   const normalizeOutlookEmailBaseUrlInput = typeof normalizeOutlookEmailBaseUrlValue === 'function'
     ? normalizeOutlookEmailBaseUrlValue
@@ -5276,6 +5816,12 @@ function collectSettingsPayload() {
     freemailAdminUsername: ((typeof inputFreemailAdminUsername !== 'undefined' && inputFreemailAdminUsername) ? inputFreemailAdminUsername.value : '').trim(),
     freemailAdminPassword: (typeof inputFreemailAdminPassword !== 'undefined' && inputFreemailAdminPassword) ? inputFreemailAdminPassword.value : '',
     freemailDomain: normalizeFreemailDomainInput((typeof inputFreemailDomain !== 'undefined' && inputFreemailDomain) ? inputFreemailDomain.value : ''),
+    moemailBaseUrl: normalizeMoemailBaseUrlInput((typeof inputMoemailBaseUrl !== 'undefined' && inputMoemailBaseUrl) ? inputMoemailBaseUrl.value : ''),
+    moemailApiKey: ((typeof inputMoemailApiKey !== 'undefined' && inputMoemailApiKey) ? inputMoemailApiKey.value : '').trim(),
+    moemailDomain: normalizeMoemailDomainInput((typeof inputMoemailDomain !== 'undefined' && inputMoemailDomain) ? inputMoemailDomain.value : ''),
+    yydsMailBaseUrl: normalizeYydsMailBaseUrlInput((typeof inputYydsMailBaseUrl !== 'undefined' && inputYydsMailBaseUrl) ? inputYydsMailBaseUrl.value : ''),
+    yydsMailApiKey: ((typeof inputYydsMailApiKey !== 'undefined' && inputYydsMailApiKey) ? inputYydsMailApiKey.value : '').trim(),
+    yydsMailDomain: normalizeYydsMailDomainInput((typeof inputYydsMailDomain !== 'undefined' && inputYydsMailDomain) ? inputYydsMailDomain.value : ''),
     outlookEmailBaseUrl: normalizeOutlookEmailBaseUrlInput((typeof inputOutlookEmailBaseUrl !== 'undefined' && inputOutlookEmailBaseUrl) ? inputOutlookEmailBaseUrl.value : ''),
     outlookEmailApiKey: (typeof inputOutlookEmailApiKey !== 'undefined' && inputOutlookEmailApiKey) ? inputOutlookEmailApiKey.value : '',
     outlookEmailGroupId: normalizeOutlookEmailGroupIdInput((typeof inputOutlookEmailGroupId !== 'undefined' && inputOutlookEmailGroupId) ? inputOutlookEmailGroupId.value : ''),
@@ -5288,6 +5834,9 @@ function collectSettingsPayload() {
     autoRunSkipFailures: inputAutoSkipFailures.checked,
     autoRunRetryNonFreeTrial: Boolean(inputAutoRunRetryNonFreeTrial?.checked),
     autoRunRetryPaypalCallback: Boolean(inputAutoRunRetryPaypalCallback?.checked),
+    autoRunRetryShortLinkError: inputAutoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError
+      ? Boolean(inputAutoRunRetryShortLinkError.checked)
+      : true,
     autoRunFallbackThreadIntervalMinutes: normalizeAutoRunThreadIntervalMinutes(inputAutoSkipFailuresThreadIntervalMinutes.value),
     step6CookieCleanupEnabled: typeof inputStep6CookieCleanupEnabled !== 'undefined' && inputStep6CookieCleanupEnabled
       ? Boolean(inputStep6CookieCleanupEnabled.checked)
@@ -5308,6 +5857,7 @@ function collectSettingsPayload() {
     plusCheckoutConversionProxyUrl: typeof inputPlusCheckoutConversionProxy !== 'undefined' && inputPlusCheckoutConversionProxy
       ? normalizePlusCheckoutConversionProxyUrlValue(inputPlusCheckoutConversionProxy.value)
       : '',
+    ...buildPpboomSettingsPayloadFromInputs(),
     ...buildPlusCheckoutLegacyPatchFromProfile(activePlusCheckoutProfile),
     chatGptApiSmsPoolText: typeof inputChatGptApiSmsPool !== 'undefined' && inputChatGptApiSmsPool
       ? normalizeHostedCheckoutSmsPoolTextValue(inputChatGptApiSmsPool.value)
@@ -5321,6 +5871,9 @@ function collectSettingsPayload() {
     hostedCheckoutSmsPoolAutoDisableEnabled: typeof inputHostedCheckoutSmsPoolAutoDisableEnabled !== 'undefined' && inputHostedCheckoutSmsPoolAutoDisableEnabled
       ? Boolean(inputHostedCheckoutSmsPoolAutoDisableEnabled.checked)
       : false,
+    hostedCheckoutCardDeclinedRetryEnabled: typeof inputHostedCheckoutCardDeclinedRetryEnabled !== 'undefined' && inputHostedCheckoutCardDeclinedRetryEnabled
+      ? Boolean(inputHostedCheckoutCardDeclinedRetryEnabled.checked)
+      : true,
     hostedCheckoutFirstDirectResendEnabled: typeof inputHostedCheckoutFirstDirectResendEnabled !== 'undefined' && inputHostedCheckoutFirstDirectResendEnabled
       ? Boolean(inputHostedCheckoutFirstDirectResendEnabled.checked)
       : false,
@@ -11695,6 +12248,9 @@ function applyAutoRunStatus(payload = currentAutoRun) {
   if (inputAutoRunRetryPaypalCallback) {
     inputAutoRunRetryPaypalCallback.disabled = scheduled;
   }
+  if (inputHostedCheckoutCardDeclinedRetryEnabled) {
+    inputHostedCheckoutCardDeclinedRetryEnabled.disabled = scheduled;
+  }
 
   const lockedRunCount = typeof getLockedRunCountFromEmailPool === 'function'
     ? getLockedRunCountFromEmailPool()
@@ -11864,6 +12420,10 @@ function syncStepDefinitionsForMode(plusModeEnabled = false, plusPaymentMethodOr
     || (typeof latestState !== 'undefined' ? latestState?.activeFlowId : '')
     || defaultFlowId
   ).trim().toLowerCase() || defaultFlowId;
+  const nextPpBoomEnabled = Boolean(
+    options.ppBoomEnabled
+    ?? (typeof inputPpboomEnabled !== 'undefined' && inputPpboomEnabled ? inputPpboomEnabled.checked : latestState?.ppBoomEnabled)
+  );
   const rootScope = typeof window !== 'undefined' ? window : globalThis;
   const currentPaymentStep = stepDefinitions.find((step) => step.key === 'paypal-approve');
   const nextPaymentTitle = rootScope.MultiPageStepDefinitions?.getPlusPaymentStepTitle?.({
@@ -11893,6 +12453,7 @@ function syncStepDefinitionsForMode(plusModeEnabled = false, plusPaymentMethodOr
     plusAccountAccessStrategy: nextAccountAccessStrategy,
     signupMethod: nextSignupMethod,
     phoneSignupReloginAfterBindEmailEnabled: nextPhoneSignupReloginAfterBindEmailEnabled,
+    ppBoomEnabled: nextPpBoomEnabled,
   });
   renderStepsList();
 }
@@ -12188,6 +12749,12 @@ function applySettingsState(state) {
     const freemailProvider = typeof FREEMAIL_PROVIDER === 'string'
       ? FREEMAIL_PROVIDER
       : 'freemail';
+    const moemailProvider = typeof MOEMAIL_PROVIDER === 'string'
+      ? MOEMAIL_PROVIDER
+      : 'moemail';
+    const yydsmailProvider = typeof YYDSMAIL_PROVIDER === 'string'
+      ? YYDSMAIL_PROVIDER
+      : 'yydsmail';
     const outlookEmailProvider = typeof OUTLOOK_EMAIL_PROVIDER === 'string'
       ? OUTLOOK_EMAIL_PROVIDER
       : 'outlook-email';
@@ -12214,6 +12781,10 @@ function applySettingsState(state) {
       selectEmailGenerator.value = 'cloudflare-temp-email';
     } else if (restoredMailProvider === freemailProvider) {
       selectEmailGenerator.value = freemailProvider;
+    } else if (restoredMailProvider === moemailProvider) {
+      selectEmailGenerator.value = moemailProvider;
+    } else if (restoredMailProvider === yydsmailProvider) {
+      selectEmailGenerator.value = yydsmailProvider;
     } else if (restoredMailProvider === outlookEmailProvider) {
       selectEmailGenerator.value = outlookEmailGenerator;
     } else if (restoredMailProvider === outlookEmailPlusProvider) {
@@ -12236,6 +12807,10 @@ function applySettingsState(state) {
       selectEmailGenerator.value = 'cloudmail';
     } else if (restoredEmailGenerator === freemailProvider) {
       selectEmailGenerator.value = freemailProvider;
+    } else if (restoredEmailGenerator === moemailProvider) {
+      selectEmailGenerator.value = moemailProvider;
+    } else if (restoredEmailGenerator === yydsmailProvider) {
+      selectEmailGenerator.value = yydsmailProvider;
     } else if (restoredEmailGenerator === outlookEmailGenerator) {
       selectEmailGenerator.value = outlookEmailGenerator;
     } else if (restoredEmailGenerator === outlookEmailPlusGenerator) {
@@ -12296,6 +12871,7 @@ function applySettingsState(state) {
   setHotmailServiceMode(state?.hotmailServiceMode);
   inputHotmailRemoteBaseUrl.value = state?.hotmailRemoteBaseUrl || '';
   inputHotmailLocalBaseUrl.value = state?.hotmailLocalBaseUrl || '';
+  updatePpboomUi(state);
   if (typeof inputHotmailAliasEnabled !== 'undefined' && inputHotmailAliasEnabled) {
     inputHotmailAliasEnabled.checked = normalizeHotmailAliasEnabledValue(state?.hotmailAliasEnabled);
   }
@@ -12315,6 +12891,12 @@ function applySettingsState(state) {
   if (typeof applyFreemailSettingsState === 'function') {
     applyFreemailSettingsState(state);
   }
+  if (typeof applyMoemailSettingsState === 'function') {
+    applyMoemailSettingsState(state);
+  }
+  if (typeof applyYydsMailSettingsState === 'function') {
+    applyYydsMailSettingsState(state);
+  }
   if (typeof applyOutlookEmailSettingsState === 'function') {
     applyOutlookEmailSettingsState(state);
   }
@@ -12329,6 +12911,11 @@ function applySettingsState(state) {
   }
   if (inputAutoRunRetryPaypalCallback) {
     inputAutoRunRetryPaypalCallback.checked = Boolean(state?.autoRunRetryPaypalCallback);
+  }
+  if (inputAutoRunRetryShortLinkError) {
+    inputAutoRunRetryShortLinkError.checked = state?.autoRunRetryShortLinkError !== undefined
+      ? Boolean(state.autoRunRetryShortLinkError)
+      : true;
   }
   inputAutoSkipFailuresThreadIntervalMinutes.value = String(normalizeAutoRunThreadIntervalMinutes(state?.autoRunFallbackThreadIntervalMinutes));
   if (typeof inputStep6CookieCleanupEnabled !== 'undefined' && inputStep6CookieCleanupEnabled) {
@@ -13168,6 +13755,8 @@ function getSelectedEmailGenerator() {
   if (generator === 'cloudflare-temp-email') return 'cloudflare-temp-email';
   if (generator === 'cloudmail') return 'cloudmail';
   if (generator === FREEMAIL_PROVIDER) return FREEMAIL_PROVIDER;
+  if (generator === MOEMAIL_GENERATOR) return MOEMAIL_GENERATOR;
+  if (generator === YYDSMAIL_GENERATOR) return YYDSMAIL_GENERATOR;
   if (generator === OUTLOOK_EMAIL_GENERATOR) return OUTLOOK_EMAIL_GENERATOR;
   if (generator === OUTLOOK_EMAIL_PLUS_GENERATOR) return OUTLOOK_EMAIL_PLUS_GENERATOR;
   return 'duck';
@@ -13231,6 +13820,22 @@ function getEmailGeneratorUiCopy() {
       placeholder: '点击生成 freemail 邮箱，或手动粘贴邮箱',
       successVerb: '生成',
       label: 'freemail',
+    };
+  }
+  if (getSelectedEmailGenerator() === MOEMAIL_GENERATOR) {
+    return {
+      buttonLabel: '生成',
+      placeholder: '点击生成 MoeMail 邮箱，或手动粘贴邮箱',
+      successVerb: '生成',
+      label: 'MoeMail',
+    };
+  }
+  if (getSelectedEmailGenerator() === YYDSMAIL_GENERATOR) {
+    return {
+      buttonLabel: '生成',
+      placeholder: '点击生成 YYDS Mail 邮箱，或手动粘贴邮箱',
+      successVerb: '生成',
+      label: 'YYDS Mail',
     };
   }
   if (getSelectedEmailGenerator() === OUTLOOK_EMAIL_GENERATOR) {
@@ -13672,6 +14277,8 @@ function updateMailProviderUI() {
   const useCloudflareTempEmailProvider = selectMailProvider.value === 'cloudflare-temp-email';
   const useCloudMailProvider = selectMailProvider.value === 'cloudmail';
   const useFreemailProvider = selectMailProvider.value === FREEMAIL_PROVIDER;
+  const useMoemailProvider = selectMailProvider.value === MOEMAIL_PROVIDER;
+  const useYydsMailProvider = selectMailProvider.value === YYDSMAIL_PROVIDER;
   const useOutlookEmailProvider = selectMailProvider.value === OUTLOOK_EMAIL_PROVIDER;
   const useOutlookEmailPlusProvider = selectMailProvider.value === OUTLOOK_EMAIL_PLUS_PROVIDER;
   const gmailAliasGenerator = typeof GMAIL_ALIAS_GENERATOR === 'string'
@@ -13689,6 +14296,10 @@ function updateMailProviderUI() {
     allowedEmailGenerators = new Set(['cloudmail']);
   } else if (useFreemailProvider) {
     allowedEmailGenerators = new Set([FREEMAIL_PROVIDER]);
+  } else if (useMoemailProvider) {
+    allowedEmailGenerators = new Set([MOEMAIL_GENERATOR]);
+  } else if (useYydsMailProvider) {
+    allowedEmailGenerators = new Set([YYDSMAIL_GENERATOR]);
   } else if (useOutlookEmailProvider) {
     allowedEmailGenerators = new Set([OUTLOOK_EMAIL_GENERATOR]);
   } else if (useOutlookEmailPlusProvider) {
@@ -13727,6 +14338,12 @@ function updateMailProviderUI() {
   if (useFreemailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== FREEMAIL_PROVIDER) {
     selectEmailGenerator.value = FREEMAIL_PROVIDER;
   }
+  if (useMoemailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== MOEMAIL_GENERATOR) {
+    selectEmailGenerator.value = MOEMAIL_GENERATOR;
+  }
+  if (useYydsMailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== YYDSMAIL_GENERATOR) {
+    selectEmailGenerator.value = YYDSMAIL_GENERATOR;
+  }
   if (useOutlookEmailProvider && String(selectEmailGenerator?.value || '').trim().toLowerCase() !== OUTLOOK_EMAIL_GENERATOR) {
     selectEmailGenerator.value = OUTLOOK_EMAIL_GENERATOR;
   }
@@ -13758,6 +14375,8 @@ function updateMailProviderUI() {
   const useCloudflareTempEmailGenerator = selectedGenerator === 'cloudflare-temp-email';
   const useCloudMailGenerator = selectedGenerator === 'cloudmail';
   const useFreemailGenerator = selectedGenerator === FREEMAIL_PROVIDER;
+  const useMoemailGenerator = selectedGenerator === MOEMAIL_GENERATOR;
+  const useYydsMailGenerator = selectedGenerator === YYDSMAIL_GENERATOR;
   const useOutlookEmailGenerator = selectedGenerator === OUTLOOK_EMAIL_GENERATOR;
   const useOutlookEmailPlusGenerator = selectedGenerator === OUTLOOK_EMAIL_PLUS_GENERATOR;
   const showCloudflareDomain = useEmailGenerator && useCloudflare;
@@ -13778,6 +14397,9 @@ function updateMailProviderUI() {
   const showCloudMailDomain = useEmailGenerator && useCloudMailGenerator;
   const showFreemailSettings = useFreemailProvider || (useEmailGenerator && useFreemailGenerator);
   const showFreemailDomain = useEmailGenerator && useFreemailGenerator;
+  const showMoemailSettings = useMoemailProvider || (useEmailGenerator && useMoemailGenerator);
+  const showMoemailDomain = useEmailGenerator && useMoemailGenerator;
+  const showYydsMailSettings = useYydsMailProvider || (useEmailGenerator && useYydsMailGenerator);
   const showOutlookEmailSettings = useOutlookEmailProvider || (useEmailGenerator && useOutlookEmailGenerator);
   const showOutlookEmailPlusSettings = useOutlookEmailPlusProvider || (useEmailGenerator && useOutlookEmailPlusGenerator);
   const useIcloudApiProvider = isIcloudApiMailProvider();
@@ -13821,6 +14443,18 @@ function updateMailProviderUI() {
   if (typeof rowFreemailAdminUsername !== 'undefined' && rowFreemailAdminUsername) rowFreemailAdminUsername.style.display = showFreemailSettings ? '' : 'none';
   if (typeof rowFreemailAdminPassword !== 'undefined' && rowFreemailAdminPassword) rowFreemailAdminPassword.style.display = showFreemailSettings ? '' : 'none';
   if (typeof rowFreemailDomain !== 'undefined' && rowFreemailDomain) rowFreemailDomain.style.display = showFreemailDomain ? '' : 'none';
+  if (typeof moemailSection !== 'undefined' && moemailSection) {
+    moemailSection.style.display = showMoemailSettings ? '' : 'none';
+  }
+  if (typeof rowMoemailBaseUrl !== 'undefined' && rowMoemailBaseUrl) rowMoemailBaseUrl.style.display = showMoemailSettings ? '' : 'none';
+  if (typeof rowMoemailApiKey !== 'undefined' && rowMoemailApiKey) rowMoemailApiKey.style.display = showMoemailSettings ? '' : 'none';
+  if (typeof rowMoemailDomain !== 'undefined' && rowMoemailDomain) rowMoemailDomain.style.display = showMoemailDomain ? '' : 'none';
+  if (typeof yydsmailSection !== 'undefined' && yydsmailSection) {
+    yydsmailSection.style.display = showYydsMailSettings ? '' : 'none';
+  }
+  if (typeof rowYydsMailBaseUrl !== 'undefined' && rowYydsMailBaseUrl) rowYydsMailBaseUrl.style.display = showYydsMailSettings ? '' : 'none';
+  if (typeof rowYydsMailApiKey !== 'undefined' && rowYydsMailApiKey) rowYydsMailApiKey.style.display = showYydsMailSettings ? '' : 'none';
+  if (typeof rowYydsMailDomain !== 'undefined' && rowYydsMailDomain) rowYydsMailDomain.style.display = showYydsMailSettings ? '' : 'none';
   if (typeof outlookEmailSection !== 'undefined' && outlookEmailSection) {
     outlookEmailSection.style.display = showOutlookEmailSettings ? '' : 'none';
   }
@@ -14816,6 +15450,14 @@ async function fetchGeneratedEmail(options = {}) {
   if (!freemailValidation.valid) {
     throw new Error(freemailValidation.message);
   }
+  const moemailValidation = validateMoemailConfigForGeneration({ focusOnError: true });
+  if (!moemailValidation.valid) {
+    throw new Error(moemailValidation.message);
+  }
+  const yydsMailValidation = validateYydsMailConfigForGeneration({ focusOnError: true });
+  if (!yydsMailValidation.valid) {
+    throw new Error(yydsMailValidation.message);
+  }
   const outlookEmailValidation = validateOutlookEmailConfigForGeneration({ focusOnError: true });
   if (!outlookEmailValidation.valid) {
     throw new Error(outlookEmailValidation.message);
@@ -14838,6 +15480,12 @@ async function fetchGeneratedEmail(options = {}) {
         freemailAdminUsername: String(inputFreemailAdminUsername?.value || '').trim(),
         freemailAdminPassword: inputFreemailAdminPassword?.value || '',
         freemailDomain: normalizeFreemailDomainValue(inputFreemailDomain?.value || ''),
+        moemailBaseUrl: normalizeMoemailBaseUrlValue(inputMoemailBaseUrl?.value || ''),
+        moemailApiKey: String(inputMoemailApiKey?.value || '').trim(),
+        moemailDomain: normalizeMoemailDomainValue(inputMoemailDomain?.value || ''),
+        yydsMailBaseUrl: normalizeYydsMailBaseUrlValue(inputYydsMailBaseUrl?.value || ''),
+        yydsMailApiKey: String(inputYydsMailApiKey?.value || '').trim(),
+        yydsMailDomain: normalizeYydsMailDomainValue(inputYydsMailDomain?.value || ''),
         outlookEmailBaseUrl: normalizeOutlookEmailBaseUrlValue(inputOutlookEmailBaseUrl?.value || ''),
         outlookEmailApiKey: inputOutlookEmailApiKey?.value || '',
         outlookEmailGroupId: normalizeOutlookEmailGroupIdValue(inputOutlookEmailGroupId?.value || ''),
@@ -16095,12 +16743,39 @@ btnFreemailGithub?.addEventListener('click', () => {
   openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[FREEMAIL_PROVIDER]?.url || 'https://github.com/idinging/freemail');
 });
 
+btnMoemailDocs?.addEventListener('click', () => {
+  openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[MOEMAIL_PROVIDER]?.url || 'https://docs.moemail.app/api');
+});
+
+btnYydsMailDocs?.addEventListener('click', () => {
+  openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[YYDSMAIL_PROVIDER]?.url || 'https://vip.215.im/docs');
+});
+
 btnOutlookEmailGithub?.addEventListener('click', () => {
   openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[OUTLOOK_EMAIL_PROVIDER]?.url || 'https://github.com/assast/outlookEmail');
 });
 
 btnOutlookEmailPlusGithub?.addEventListener('click', () => {
   openExternalUrl(MAIL_PROVIDER_LOGIN_CONFIGS[OUTLOOK_EMAIL_PLUS_PROVIDER]?.url || 'https://github.com/ZeroPointSix/outlookEmailPlus');
+});
+
+[
+  inputOutlookEmailBaseUrl,
+  inputOutlookEmailApiKey,
+  inputOutlookEmailGroupId,
+].forEach((input) => {
+  input?.addEventListener('input', () => {
+    markSettingsDirty(true);
+    scheduleSettingsAutoSave();
+  });
+  input?.addEventListener('blur', () => {
+    if (input === inputOutlookEmailBaseUrl) {
+      input.value = normalizeOutlookEmailBaseUrlValue(input.value);
+    } else if (input === inputOutlookEmailGroupId) {
+      input.value = normalizeOutlookEmailGroupIdValue(input.value);
+    }
+    saveSettings({ silent: true }).catch(() => { });
+  });
 });
 
 extensionUpdateStatus?.addEventListener('click', () => {
@@ -16239,6 +16914,9 @@ async function startAutoRunFromCurrentSettings() {
   const autoRunSkipFailures = inputAutoSkipFailures.checked;
   const autoRunRetryNonFreeTrial = Boolean(inputAutoRunRetryNonFreeTrial?.checked);
   const autoRunRetryPaypalCallback = Boolean(inputAutoRunRetryPaypalCallback?.checked);
+  const autoRunRetryShortLinkError = inputAutoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError
+    ? Boolean(inputAutoRunRetryShortLinkError.checked)
+    : true;
   const contributionNickname = String(inputContributionNickname?.value || '').trim();
   const contributionQq = String(inputContributionQq?.value || '').trim();
   const fallbackThreadIntervalMinutes = normalizeAutoRunThreadIntervalMinutes(
@@ -16290,6 +16968,7 @@ async function startAutoRunFromCurrentSettings() {
       autoRunSkipFailures,
       autoRunRetryNonFreeTrial,
       autoRunRetryPaypalCallback,
+      autoRunRetryShortLinkError,
       contributionMode: Boolean(latestState?.contributionMode),
       contributionNickname,
       contributionQq,
@@ -16520,25 +17199,6 @@ inputVpsPassword.addEventListener('blur', () => {
     scheduleSettingsAutoSave();
   });
   input?.addEventListener('blur', () => {
-    saveSettings({ silent: true }).catch(() => { });
-  });
-});
-
-[
-  inputOutlookEmailBaseUrl,
-  inputOutlookEmailApiKey,
-  inputOutlookEmailGroupId,
-].forEach((input) => {
-  input?.addEventListener('input', () => {
-    markSettingsDirty(true);
-    scheduleSettingsAutoSave();
-  });
-  input?.addEventListener('blur', () => {
-    if (input === inputOutlookEmailBaseUrl) {
-      input.value = normalizeOutlookEmailBaseUrlValue(input.value);
-    } else if (input === inputOutlookEmailGroupId) {
-      input.value = normalizeOutlookEmailGroupIdValue(input.value);
-    }
     saveSettings({ silent: true }).catch(() => { });
   });
 });
@@ -18406,6 +19066,118 @@ async function handleHostedCheckoutManualFetch() {
   }
 }
 
+async function handleSavePpboomSettings() {
+  const payload = buildPpboomSettingsPayloadFromInputs();
+  const activeWindowId = payload.ppBoomBrowserBackend === 'roxybrowser'
+    ? payload.ppBoomRoxyBrowserProfileId
+    : payload.ppBoomAdsPowerProfileId;
+  if (payload.ppBoomBrowserBackend === 'adspower' && !activeWindowId) {
+    throw new Error('AdsPower窗口ID 为必填项。');
+  }
+  if (payload.ppBoomBrowserBackend === 'roxybrowser' && !activeWindowId) {
+    throw new Error('RoxyBrowser窗口ID 为必填项。');
+  }
+  if (payload.ppBoomBrowserBackend === 'roxybrowser' && /^\d+$/.test(activeWindowId || '')) {
+    throw new Error('RoxyBrowser窗口ID 不是 workspaceId。请在 RoxyBrowser-全部窗口-右键窗口-窗口操作-复制窗口ID。');
+  }
+  if (payload.ppBoomBrowserBackend === 'roxybrowser' && !payload.ppBoomRoxyBrowserApiKey) {
+    throw new Error('RoxyBrowser API Key 为必填项。');
+  }
+  if (selectPpboomBrowserBackend) {
+    selectPpboomBrowserBackend.value = payload.ppBoomBrowserBackend;
+  }
+  if (inputPpboomAdsPowerApiBase) {
+    inputPpboomAdsPowerApiBase.value = payload.ppBoomAdsPowerApiBase;
+  }
+  if (inputPpboomAdsPowerApiKey) {
+    inputPpboomAdsPowerApiKey.value = payload.ppBoomAdsPowerApiKey;
+  }
+  if (inputPpboomAdsPowerProfileId) {
+    inputPpboomAdsPowerProfileId.value = payload.ppBoomAdsPowerProfileId;
+  }
+  if (inputPpboomRoxyBrowserProfileId) {
+    inputPpboomRoxyBrowserProfileId.value = payload.ppBoomRoxyBrowserProfileId;
+  }
+  if (inputPpboomRoxyBrowserApiBase) {
+    inputPpboomRoxyBrowserApiBase.value = payload.ppBoomRoxyBrowserApiBase;
+  }
+  if (inputPpboomRoxyBrowserApiKey) {
+    inputPpboomRoxyBrowserApiKey.value = payload.ppBoomRoxyBrowserApiKey;
+  }
+  if (inputPpboomMaxAttempts) {
+    inputPpboomMaxAttempts.value = String(payload.ppBoomMaxAttempts);
+  }
+  if (selectPpboomPaymentLocale) {
+    selectPpboomPaymentLocale.value = payload.ppBoomPaymentLocale;
+  }
+  if (inputPpboomCheckoutRebuildMaxAttempts) {
+    inputPpboomCheckoutRebuildMaxAttempts.value = String(payload.ppBoomCheckoutRebuildMaxAttempts);
+  }
+  if (inputPpboomDefaultProxy) {
+    inputPpboomDefaultProxy.value = payload.ppBoomDefaultProxy;
+  }
+  if (inputPpboomProviderProxy) {
+    inputPpboomProviderProxy.value = payload.ppBoomProviderProxy;
+  }
+  const response = await sendRuntimeMessageWithTimeout({
+    type: 'SAVE_SETTING',
+    source: 'sidepanel',
+    payload,
+  }, 20000, '保存 PPBoom 配置');
+  if (response?.error) {
+    throw new Error(response.error);
+  }
+  syncLatestState({
+    ...(latestState || {}),
+    ...payload,
+    ...(response?.state && typeof response.state === 'object' ? response.state : {}),
+  });
+  updatePpboomUi(latestState);
+  markSettingsDirty(false);
+  showToast('PPBoom 配置已保存。', 'success', 1800);
+}
+
+async function handleClearPpboomSettings() {
+  const defaults = buildDefaultPpboomSettings();
+  resetPpboomInputsToDefaults();
+  const response = await sendRuntimeMessageWithTimeout({
+    type: 'SAVE_SETTING',
+    source: 'sidepanel',
+    payload: defaults,
+  }, 20000, '清除 PPBoom 配置');
+  if (response?.error) {
+    throw new Error(response.error);
+  }
+  syncLatestState({
+    ...(latestState || {}),
+    ...defaults,
+    ...(response?.state && typeof response.state === 'object' ? response.state : {}),
+  });
+  updatePpboomUi(latestState);
+  markSettingsDirty(false);
+  showToast('PPBoom 配置已重置。', 'success', 1800);
+}
+
+async function controlPpboomJob(action = 'pause') {
+  const type = action === 'resume' ? 'PPBOOM_RESUME_JOB' : 'PPBOOM_PAUSE_JOB';
+  const response = await sendRuntimeMessageWithTimeout({
+    type,
+    source: 'sidepanel',
+    payload: {},
+  }, 20000, action === 'resume' ? '继续 PPBoom 任务' : '暂停 PPBoom 任务');
+  if (response?.error) {
+    throw new Error(response.error);
+  }
+  if (response?.state && typeof response.state === 'object') {
+    syncLatestState({
+      ...(latestState || {}),
+      ...response.state,
+    });
+    updatePpboomUi(latestState);
+  }
+  showToast(action === 'resume' ? 'PPBoom 已继续。' : 'PPBoom 已请求暂停。', 'info', 1800);
+}
+
 function handlePlusCheckoutModeSelectionChange(nextMode) {
   const previousMode = getActivePlusCheckoutModeFromState(latestState);
   const previousProfileDraft = buildPlusCheckoutProfileFromInputs();
@@ -18465,6 +19237,116 @@ inputPlusCheckoutConversionProxy?.addEventListener('blur', () => {
 btnPlusCheckoutConversionProxyTest?.addEventListener('click', () => {
   handlePlusCheckoutConversionProxyTest().catch((error) => {
     showToast(error?.message || String(error || '支付转换代理测试失败'), 'error');
+  });
+});
+
+inputPpboomEnabled?.addEventListener('change', () => {
+  const stepDefinitionState = typeof resolveStepDefinitionCapabilityState === 'function'
+    ? resolveStepDefinitionCapabilityState({
+      ...latestState,
+      ...buildPpboomSettingsPayloadFromInputs(),
+    }, {
+      signupMethod: latestState?.signupMethod,
+    })
+    : {
+      plusModeEnabled: Boolean(latestState?.plusModeEnabled),
+      signupMethod: normalizeSignupMethod(latestState?.signupMethod || DEFAULT_SIGNUP_METHOD),
+      plusAccountAccessStrategy: latestState?.plusAccountAccessStrategy,
+    };
+  syncStepDefinitionsForMode(stepDefinitionState.plusModeEnabled, {
+    plusPaymentMethod: getSelectedPlusPaymentMethod(latestState),
+    signupMethod: stepDefinitionState.signupMethod,
+    plusAccountAccessStrategy: stepDefinitionState.plusAccountAccessStrategy,
+    ppBoomEnabled: Boolean(inputPpboomEnabled.checked),
+    render: true,
+  });
+  updatePpboomUi({
+    ...latestState,
+    ...buildPpboomSettingsPayloadFromInputs(),
+  });
+  markSettingsDirty(true);
+});
+selectPpboomBrowserBackend?.addEventListener('change', () => {
+  updatePpboomUi({
+    ...latestState,
+    ...buildPpboomSettingsPayloadFromInputs(),
+  });
+  markSettingsDirty(true);
+});
+inputPpboomAdsPowerApiBase?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomAdsPowerApiBase?.addEventListener('blur', () => {
+  inputPpboomAdsPowerApiBase.value = normalizePpboomAdsPowerApiBaseValue(inputPpboomAdsPowerApiBase.value);
+});
+inputPpboomAdsPowerApiKey?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomAdsPowerProfileId?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomRoxyBrowserProfileId?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomRoxyBrowserApiBase?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomRoxyBrowserApiBase?.addEventListener('blur', () => {
+  inputPpboomRoxyBrowserApiBase.value = normalizePpboomRoxyBrowserApiBaseValue(inputPpboomRoxyBrowserApiBase.value);
+});
+inputPpboomRoxyBrowserApiKey?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomStripePublishableKey?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomDeviceId?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomUserAgent?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomMaxAttempts?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomMaxAttempts?.addEventListener('blur', () => {
+  inputPpboomMaxAttempts.value = String(normalizePpboomMaxAttemptsValue(inputPpboomMaxAttempts.value));
+});
+selectPpboomPaymentLocale?.addEventListener('change', () => {
+  markSettingsDirty(true);
+});
+inputPpboomCheckoutRebuildMaxAttempts?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomCheckoutRebuildMaxAttempts?.addEventListener('blur', () => {
+  inputPpboomCheckoutRebuildMaxAttempts.value = String(
+    normalizePpboomCheckoutRebuildMaxAttemptsValue(inputPpboomCheckoutRebuildMaxAttempts.value, 3)
+  );
+});
+inputPpboomDefaultProxy?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+inputPpboomProviderProxy?.addEventListener('input', () => {
+  markSettingsDirty(true);
+});
+btnSavePpboomSettings?.addEventListener('click', () => {
+  handleSavePpboomSettings().catch((error) => {
+    showToast(error?.message || String(error || '保存 PPBoom 配置失败'), 'error');
+  });
+});
+btnClearPpboomSettings?.addEventListener('click', () => {
+  handleClearPpboomSettings().catch((error) => {
+    showToast(error?.message || String(error || '清除 PPBoom 配置失败'), 'error');
+  });
+});
+btnPpboomPause?.addEventListener('click', () => {
+  controlPpboomJob('pause').catch((error) => {
+    showToast(error?.message || String(error || '暂停 PPBoom 失败'), 'error');
+  });
+});
+btnPpboomResume?.addEventListener('click', () => {
+  controlPpboomJob('resume').catch((error) => {
+    showToast(error?.message || String(error || '继续 PPBoom 失败'), 'error');
   });
 });
 
@@ -18544,6 +19426,14 @@ inputChatGptApiSmsPoolAutoDisableEnabled?.addEventListener('change', () => {
 });
 
 inputHostedCheckoutFirstDirectResendEnabled?.addEventListener('change', () => {
+  markSettingsDirty(true);
+  saveSettings({ silent: true }).catch(() => { });
+});
+
+inputHostedCheckoutCardDeclinedRetryEnabled?.addEventListener('change', () => {
+  syncActivePlusCheckoutProfilePatch({
+    hostedCheckoutCardDeclinedRetryEnabled: Boolean(inputHostedCheckoutCardDeclinedRetryEnabled.checked),
+  });
   markSettingsDirty(true);
   saveSettings({ silent: true }).catch(() => { });
 });
@@ -19173,6 +20063,11 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         localhostUrl: null,
         email: null,
         password: null,
+        ppBoomJobId: '',
+        ppBoomJobStatus: '',
+        ppBoomCurrentAttempt: 0,
+        ppBoomPauseRequested: false,
+        ppBoomLastLogIndex: 0,
         nodeStatuses: NODE_DEFAULT_STATUSES,
         logs: [],
         scheduledAutoRunAt: null,
@@ -19222,6 +20117,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       renderPayPalAccounts();
       renderHotmailAccounts();
       renderMail2925Accounts();
+      updatePpboomUi(latestState);
       if (isLuckmailProvider()) {
         queueLuckmailPurchaseRefresh();
       }
@@ -19495,6 +20391,38 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       ) {
         updateMailProviderUI();
       }
+      if (message.payload.moemailBaseUrl !== undefined && inputMoemailBaseUrl) {
+        inputMoemailBaseUrl.value = message.payload.moemailBaseUrl || '';
+      }
+      if (message.payload.moemailApiKey !== undefined && inputMoemailApiKey) {
+        inputMoemailApiKey.value = message.payload.moemailApiKey || '';
+      }
+      if (message.payload.moemailDomain !== undefined && inputMoemailDomain) {
+        inputMoemailDomain.value = message.payload.moemailDomain || '';
+      }
+      if (
+        message.payload.moemailBaseUrl !== undefined
+        || message.payload.moemailApiKey !== undefined
+        || message.payload.moemailDomain !== undefined
+      ) {
+        updateMailProviderUI();
+      }
+      if (message.payload.yydsMailBaseUrl !== undefined && inputYydsMailBaseUrl) {
+        inputYydsMailBaseUrl.value = message.payload.yydsMailBaseUrl || '';
+      }
+      if (message.payload.yydsMailApiKey !== undefined && inputYydsMailApiKey) {
+        inputYydsMailApiKey.value = message.payload.yydsMailApiKey || '';
+      }
+      if (message.payload.yydsMailDomain !== undefined && inputYydsMailDomain) {
+        inputYydsMailDomain.value = message.payload.yydsMailDomain || '';
+      }
+      if (
+        message.payload.yydsMailBaseUrl !== undefined
+        || message.payload.yydsMailApiKey !== undefined
+        || message.payload.yydsMailDomain !== undefined
+      ) {
+        updateMailProviderUI();
+      }
       if (message.payload.outlookEmailBaseUrl !== undefined && inputOutlookEmailBaseUrl) {
         inputOutlookEmailBaseUrl.value = message.payload.outlookEmailBaseUrl || '';
       }
@@ -19604,6 +20532,30 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
         updateSignupMethodUI({ notify: true });
       }
       if (
+        message.payload.ppBoomEnabled !== undefined
+        || message.payload.ppBoomBrowserBackend !== undefined
+        || message.payload.ppBoomAdsPowerApiBase !== undefined
+        || message.payload.ppBoomAdsPowerApiKey !== undefined
+        || message.payload.ppBoomAdsPowerProfileId !== undefined
+        || message.payload.ppBoomRoxyBrowserApiBase !== undefined
+        || message.payload.ppBoomRoxyBrowserApiKey !== undefined
+        || message.payload.ppBoomRoxyBrowserProfileId !== undefined
+        || message.payload.ppBoomStripePublishableKey !== undefined
+        || message.payload.ppBoomDeviceId !== undefined
+        || message.payload.ppBoomUserAgent !== undefined
+        || message.payload.ppBoomMaxAttempts !== undefined
+        || message.payload.ppBoomPaymentLocale !== undefined
+        || message.payload.ppBoomCheckoutRebuildMaxAttempts !== undefined
+        || message.payload.ppBoomProxy !== undefined
+        || message.payload.ppBoomDefaultProxy !== undefined
+        || message.payload.ppBoomProviderProxy !== undefined
+        || message.payload.ppBoomJobStatus !== undefined
+        || message.payload.ppBoomCurrentAttempt !== undefined
+        || message.payload.ppBoomPauseRequested !== undefined
+      ) {
+        updatePpboomUi(latestState);
+      }
+      if (
         message.payload.plusManualConfirmationPending !== undefined
         || message.payload.plusManualConfirmationRequestId !== undefined
         || message.payload.plusManualConfirmationStep !== undefined
@@ -19696,6 +20648,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       if (message.payload.autoRunRetryPaypalCallback !== undefined && inputAutoRunRetryPaypalCallback) {
         inputAutoRunRetryPaypalCallback.checked = Boolean(message.payload.autoRunRetryPaypalCallback);
       }
+      if (message.payload.autoRunRetryShortLinkError !== undefined && inputAutoRunRetryShortLinkError) {
+        inputAutoRunRetryShortLinkError.checked = Boolean(message.payload.autoRunRetryShortLinkError);
+      }
       if (message.payload.autoRunDelayEnabled !== undefined && inputAutoDelayEnabled) {
         inputAutoDelayEnabled.checked = Boolean(message.payload.autoRunDelayEnabled);
         updateAutoDelayInputState();
@@ -19771,6 +20726,9 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       }
       if (message.payload.hostedCheckoutFirstDirectResendEnabled !== undefined && inputHostedCheckoutFirstDirectResendEnabled) {
         inputHostedCheckoutFirstDirectResendEnabled.checked = Boolean(message.payload.hostedCheckoutFirstDirectResendEnabled);
+      }
+      if (message.payload.hostedCheckoutCardDeclinedRetryEnabled !== undefined && inputHostedCheckoutCardDeclinedRetryEnabled) {
+        inputHostedCheckoutCardDeclinedRetryEnabled.checked = Boolean(message.payload.hostedCheckoutCardDeclinedRetryEnabled);
       }
       if (message.payload.hostedCheckoutFirstResendWaitSeconds !== undefined && inputHostedCheckoutFirstResendWaitSeconds) {
         inputHostedCheckoutFirstResendWaitSeconds.value = String(
